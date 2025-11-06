@@ -1,281 +1,125 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ucapan Ulang Tahun 🎉</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
-    body {
-      background: linear-gradient(#ff96d0, #ff96d0);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      overflow: hidden;
-      transition: background 1s ease;
-    }
-
-    h1 {
-      font-size: 2.2em;
-      color: #333;
-      margin-bottom: 10px;
-      animation: fadeIn 1s ease;
-    }
-
-    p {
-      font-size: 20px;
-      color: #444;
-      margin: 10px 0;
-      line-height: 1.6;
-      animation: fadeIn 1.5s ease;
-    }
-
-    input {
-      padding: 10px;
-      border: 1px solid #aaa;
-      border-radius: 10px;
-      margin-top: 15px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    button {
-      margin-top: 30px;
-      background: #4ade80;
-      color: white;
-      padding: 10px 25px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #22c55e;
-      transform: scale(1.05);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 1.8em; }
-      p { font-size: 16px; }
-    }
-
-    /* 🎈 Balon */
-    .balloon {
-      position: absolute;
-      bottom: -150px;
-      width: 60px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--color);
-      animation: floatUp 8s linear infinite;
-      opacity: 0.9;
-    }
-
-    .balloon::after {
-      content: "";
-      position: absolute;
-      bottom: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 20px;
-      background: #888;
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 0.9; }
-      100% { transform: translateY(-120vh); opacity: 0; }
-    }
-
-    /* 🎉 Konfeti */
-    .confetti {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 8px;
-      height: 14px;
-      background: var(--color);
-      animation: fall 3s linear infinite;
-      z-index: 5;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-    }
-
-    /* ✨ Transisi antar halaman */
-    #content {
-      opacity: 0;
-      transition: opacity 0.8s ease;
-    }
-
-    #content.show {
-      opacity: 1;
-    }
-
-    /* 📸 Galeri foto */
-    .photo-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .photo-gallery img {
-      width: 180px;
-      height: auto;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      transition: transform 0.3s;
-    }
-
-    .photo-gallery img:hover {
-      transform: scale(1.05);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ucapan Ulang Tahun 🎉</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+body { background:pink; min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; overflow:hidden; transition: background 0.5s ease; }
+h1 { font-size:2.2em; color:#333; margin-bottom:10px; animation:fadeIn 1s ease; }
+p { font-size:18px; color:#444; margin:10px 0; line-height:1.5; animation:fadeIn 1.5s ease; }
+input { padding:10px; border:1px solid #aaa; border-radius:10px; margin-top:15px; font-size:16px; outline:none; }
+button { margin-top:30px; background:#4ade80; color:white; padding:10px 25px; border:none; border-radius:25px; cursor:pointer; font-size:16px; transition:0.3s; }
+button:hover { background:#22c55e; transform:scale(1.05); }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:600px){ h1{font-size:1.8em;} p{font-size:16px;} }
+/* Balon */
+.balloon { position:absolute; bottom:-150px; width:60px; height:80px; border-radius:50%; background:var(--color); animation:floatUp 8s linear infinite; opacity:0.9; }
+.balloon::after { content:""; position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); width:2px; height:20px; background:#888; }
+@keyframes floatUp {0%{transform:translateY(0);opacity:0.9;}100%{transform:translateY(-120vh);opacity:0;}}
+/* Konfeti */
+.confetti { position:fixed; top:0; left:0; width:8px; height:14px; background:var(--color); animation:fall 3s linear infinite; z-index:5; }
+@keyframes fall {0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(360deg);opacity:0;}}
+/* Transisi konten */
+#content { opacity:0; transition:opacity 0.8s ease; }
+#content.show { opacity:1; }
+/* Foto Grid */
+.photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; justify-items:center; margin:20px 0; }
+.photo-grid img { width:100%; max-width:120px; height:auto; border-radius:10px; }
+@media(max-width:600px){ .photo-grid{grid-template-columns:repeat(2,1fr);} }
+</style>
 </head>
-
 <body>
-  <div id="content"></div>
+<div id="content"></div>
+<audio id="bg-music" src="happy-birthday.mp3" loop></audio>
 
-  <!-- 🎵 Dua musik berbeda -->
-  <audio id="bg-music" src="happy-birthday.mp3" loop></audio>
-  <audio id="photo-music" src="memories.mp3" loop></audio>
+<script>
+// Warna efek
+const confettiColors=["#ff0a54","#ff477e","#ff85a1","#fbb1bd","#bde0fe"];
+const balloonColors=["#ff4b5c","#ffb400","#3cd070","#4d96ff","#ff8fab"];
+function createConfetti(){for(let i=0;i<40;i++){const c=document.createElement("div");c.classList.add("confetti");c.style.left=Math.random()*100+"vw";c.style.animationDuration=2+Math.random()*3+"s";c.style.setProperty("--color",confettiColors[Math.floor(Math.random()*confettiColors.length)]);document.body.appendChild(c);}}
+function createBalloons(){for(let i=0;i<10;i++){const b=document.createElement("div");b.classList.add("balloon");b.style.left=Math.random()*100+"vw";b.style.animationDuration=6+Math.random()*4+"s";b.style.setProperty("--color",balloonColors[Math.floor(Math.random()*balloonColors.length)]);document.body.appendChild(b);}}
+createConfetti(); createBalloons();
 
-  <script>
-    // Warna efek
-    const confettiColors = ["#ff0a54", "#ff477e", "#ff85a1", "#fbb1bd", "#bde0fe"];
-    const balloonColors = ["#ff4b5c", "#ffb400", "#3cd070", "#4d96ff", "#ff8fab"];
+// Musik tetap berjalan
+const bgMusic=document.getElementById("bg-music");
+document.body.addEventListener("click",()=>{if(bgMusic.paused) bgMusic.play().catch(()=>{});});
 
-    // 🎈 Efek balon & konfeti
-    function createConfetti() {
-      for (let i = 0; i < 40; i++) {
-        const c = document.createElement("div");
-        c.classList.add("confetti");
-        c.style.left = Math.random() * 100 + "vw";
-        c.style.animationDuration = 2 + Math.random() * 3 + "s";
-        c.style.setProperty("--color", confettiColors[Math.floor(Math.random() * confettiColors.length)]);
-        document.body.appendChild(c);
-      }
-    }
+const content=document.getElementById("content");
 
-    function createBalloons() {
-      for (let i = 0; i < 10; i++) {
-        const b = document.createElement("div");
-        b.classList.add("balloon");
-        b.style.left = Math.random() * 100 + "vw";
-        b.style.animationDuration = 6 + Math.random() * 4 + "s";
-        b.style.setProperty("--color", balloonColors[Math.floor(Math.random() * balloonColors.length)]);
-        document.body.appendChild(b);
-      }
-    }
+function tampilHalaman(html,nextFunc=null){content.classList.remove("show");setTimeout(()=>{content.innerHTML=html;content.classList.add("show");if(nextFunc)nextFunc();},500);}
 
-    createConfetti();
-    createBalloons();
-
-    // 🎵 Musik
-    const bgMusic = document.getElementById("bg-music");
-    const photoMusic = document.getElementById("photo-music");
-
-    document.body.addEventListener("click", () => {
-      if (bgMusic.paused && photoMusic.paused) bgMusic.play().catch(() => {});
-    });
-
-    // 🌟 Konten dan transisi
-    const content = document.getElementById("content");
-
-    function tampilHalaman(html, nextFunc = null, bgColor = "#ff96d0") {
-      document.body.style.background = bgColor;
-      content.classList.remove("show");
-      setTimeout(() => {
-        content.innerHTML = html;
-        content.classList.add("show");
-        if (nextFunc) nextFunc();
-      }, 500);
-    }
-
-    function halamanNama() {
-      bgMusic.play().catch(()=>{});
-      photoMusic.pause();
-      photoMusic.currentTime = 0;
-      tampilHalaman(`
+// Halaman Input Nama
+function halamanNama(){
+    bgMusic.src="happy-birthday.mp3";
+    bgMusic.play().catch(()=>{});
+    tampilHalaman(`
         <h1>Masukkan Nama Kamu 🎈</h1>
         <input type="text" id="nama" placeholder="Nama kamu..." />
         <button id="btnNext">Lanjut ➜</button>
-      `, () => {
-        document.getElementById("btnNext").onclick = () => {
-          const nama = document.getElementById("nama").value.trim();
-          if (!nama) return alert("Masukkan namamu dulu ya 😊");
-          localStorage.setItem("namaUser", nama);
-          halamanUcapan();
+    `,()=>{
+        document.getElementById("btnNext").onclick=()=>{
+            const nama=document.getElementById("nama").value.trim();
+            if(!nama) return alert("Masukkan namamu dulu 😊");
+            localStorage.setItem("namaUser",nama);
+            halamanUcapan();
         };
-      }, "linear-gradient(#ff96d0, #ff96f0)");
-    }
+    });
+}
 
-    function halamanUcapan() {
-      const nama = localStorage.getItem("namaUser") || "Sahabat";
-      tampilHalaman(`
+// Halaman Ucapan
+function halamanUcapan(){
+    const nama=localStorage.getItem("namaUser")||"Sahabat";
+    tampilHalaman(`
         <h1>Happy Sweet Seventeen 🥳</h1>
         <p>Hai ${nama}, Happy Birthday! Wish u All the Best 🎂💖</p>
-        <p>🙌 - 8 Februari 2009 - 🙌</p>
-        <button id="btnDoa">Lanjut ➜</button>
-      `, () => {
-        document.getElementById("btnDoa").onclick = halamanDoa;
-      }, "linear-gradient(#ff96d0, #ff96d0)");
-   } 
-    function halamanDoa() { 
-      const nama = localStorage.getItem("namaUser") || "Sahabat";
-      tampilHalaman(`
+        <p>🙌- 8 Februari 2009 - 🙌</p>
+        <button id="btnDoa">Lanjut ke Doa & Harapan ➜</button>
+    `,()=>{
+        document.getElementById("btnDoa").onclick=halamanDoa;
+    });
+}
+
+// Halaman Doa
+function halamanDoa(){
+    const nama=localStorage.getItem("namaUser")||"Sahabat";
+    tampilHalaman(`
         <h1>Doa Untukmu 💐</h1>
         <p>${nama}, Semoga kamu selalu sehat, bahagia, dan penuh semangat belajar.</p>
         <p>Semoga impian dan cita-citamu tercapai, dan setiap hari dipenuhi tawa serta pengalaman baru yang berharga. 🌈✨</p>
         <p>Tuhan Yesus Memberkati! ✨</p>
-        <button id="btnFoto">Lihat Foto 📸</button>
-      `, () => {
-        document.getElementById("btnFoto").onclick = halamanFoto;
-      }, "linear-gradient(#ff96d0, #ff96d0)");
-    }
+        <p>(●'◡'●)</p>
+        <button id="btnFoto">Lihat Foto 📸 ➜</button>
+    `,()=>{
+        document.getElementById("btnFoto").onclick=halamanFoto;
+    });
+}
 
-    function halamanFoto() {
-      // Ganti musik
-      bgMusic.pause();
-      photoMusic.currentTime = 0;
-      photoMusic.play().catch(()=>{});
-
-      tampilHalaman(`
-        <h1>You'r Photo's 📷</h1>
-        <div class="photo-gallery">
-          <img src="images/1.png" alt="Foto 1">
-          <img src="images/2.png" alt="Foto 2">
-          <img src="images/3.png" alt="Foto 3">
+// Halaman Foto
+function halamanFoto(){
+    bgMusic.src="memories.mp3"; // Ganti musik
+    bgMusic.play().catch(()=>{});
+    tampilHalaman(`
+        <h1>📸🌟</h1>
+        <div class="photo-grid">
+            <img src="images/1.png" alt="Foto 1">
+            <img src="images/2.png" alt="Foto 2">
+            <img src="images/3.png" alt="Foto 3">
+            <img src="images/4.png" alt="Foto 4">
+            <img src="images/5.png" alt="Foto 5">
+            <img src="images/6.png" alt="Foto 6">
+            <img src="images/7.png" alt="Foto 7">
+            <img src="images/8.png" alt="Foto 8">
         </div>
         <button id="btnKembali">Kembali ke Awal 🔁</button>
-      `, () => {
-        document.getElementById("btnKembali").onclick = halamanNama;
-      }, "linear-gradient(#ff96d0, #ff96d0)");
-    }
+    `,()=>{
+        document.getElementById("btnKembali").onclick=halamanNama;
+    });
+}
 
-    // 🚀 Mulai
-    halamanNama();
-  </script>
+// Mulai web
+halamanNama();
+</script>
 </body>
 </html>
