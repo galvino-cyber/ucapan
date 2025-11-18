@@ -4,177 +4,307 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ucapan Ulang Tahun 🎉</title>
+
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:"Comic Sans MS",sans-serif; }
-body { background:pink; min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; overflow:hidden; transition: background 0.5s ease; }
+
+body {
+    background:pink;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    overflow:hidden;
+    transition: background 0.5s ease;
+}
+
 h1 { font-size:2.2em; color:#333; margin-bottom:10px; animation:fadeIn 1s ease; }
 p { font-size:18px; color:#444; margin:10px 0; line-height:1.5; animation:fadeIn 1.5s ease; }
-input { padding:10px; border:1px solid #aaa; border-radius:10px; margin-top:15px; font-size:16px; outline:none; }
-button { margin-top:30px; background:#4ade80; color:white; padding:10px 25px; border:none; border-radius:25px; cursor:pointer; font-size:16px; transition:0.3s; }
+
+input {
+    padding:10px;
+    border:1px solid #aaa;
+    border-radius:10px;
+    margin-top:15px;
+    font-size:16px;
+    outline:none;
+}
+
+button {
+    margin-top:30px;
+    background:#4ade80;
+    color:white;
+    padding:10px 25px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:16px;
+    transition:0.3s;
+}
+
 button:hover { background:#22c55e; transform:scale(1.05); }
-@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-@media(max-width:600px){ h1{font-size:1.8em;} p{font-size:16px;} }
+
+/* Animasi */
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:translateY(0);} }
+
+/* Responsif */
+@media(max-width:600px){
+    h1{font-size:1.8em;}
+    p{font-size:16px;}
+}
 
 /* Balon */
-.balloon { position:absolute; bottom:-150px; width:60px; height:80px; border-radius:50%; background:var(--color); animation:floatUp 8s linear infinite; opacity:0.9; }
-.balloon::after { content:""; position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); width:2px; height:20px; background:#888; }
-@keyframes floatUp {0%{transform:translateY(0);opacity:0.9;}100%{transform:translateY(-120vh);opacity:0;}}
+.balloon {
+    position:absolute;
+    bottom:-150px;
+    width:60px;
+    height:80px;
+    border-radius:50%;
+    background:var(--color);
+    animation:floatUp 8s linear infinite;
+    opacity:0.9;
+}
+
+.balloon::after {
+    content:"";
+    position:absolute;
+    bottom:-20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:2px;
+    height:20px;
+    background:#888;
+}
+
+@keyframes floatUp {
+    0%{transform:translateY(0);opacity:0.9;}
+    100%{transform:translateY(-120vh);opacity:0;}
+}
 
 /* Konfeti */
-.confetti { position:fixed; top:0; left:0; width:8px; height:14px; background:var(--color); animation:fall 3s linear infinite; z-index:5; }
-@keyframes fall {0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(360deg);opacity:0;}}
+.confetti {
+    position:fixed;
+    top:0;
+    left:0;
+    width:8px;
+    height:14px;
+    background:var(--color);
+    animation:fall 3s linear infinite;
+    z-index:5;
+}
+
+@keyframes fall {
+    0%{transform:translateY(-10px) rotate(0deg);opacity:1;}
+    100%{transform:translateY(100vh) rotate(360deg);opacity:0;}
+}
 
 /* Transisi konten */
 #content { opacity:0; transition:opacity 0.8s ease; }
 #content.show { opacity:1; }
 
-/* Foto Grid */
-.photo-grid { display:flex; flex-direction:row; gap:15px; justify-content:center; overflow-x:auto; margin:20px 0; }
-.photo-grid img { width:100%; max-width:120px; height:auto; border-radius:10px; }
-
-/* ===== POLAROID PHOTO STYLE ===== */
-.polaroid {
-  background: white;
-  padding: 10px 10px 30px;
-  border-radius: 8px;
-  width: 140px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  transform: rotate(calc(-5deg + 10deg * var(--rand)));
-  transition: 0.3s ease;
-  flex-shrink:0;
+/* Foto Polaroid */
+.photo-grid {
+    display:flex;
+    flex-direction:row;
+    gap:15px;
+    justify-content:center;
+    overflow-x:auto;
+    margin:20px 0;
 }
-.polaroid:hover { transform: scale(1.05) rotate(0deg); }
-.polaroid img { width: 100%; border-radius: 5px; }
-.polaroid .caption { margin-top: 8px; font-size: 14px; color: #555; font-family: "Comic Sans MS", sans-serif; }
 
-/* ===== HALAMAN BUNGA INTERAKTIF ===== */
+.polaroid {
+    background:white;
+    padding:10px 10px 30px;
+    border-radius:8px;
+    width:140px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    transform:rotate(calc(-5deg + 10deg * var(--rand)));
+    transition:0.3s ease;
+    flex-shrink:0;
+}
+
+.polaroid:hover { transform:scale(1.05) rotate(0deg); }
+
+.polaroid img { width:100%; border-radius:5px; }
+
+.polaroid .caption {
+    margin-top:8px;
+    font-size:14px;
+    color:#555;
+    font-family:"Comic Sans MS";
+}
+
+/* Halaman bunga */
 #flower-page {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #ffe0f0;
-  text-align: center;
-  gap: 20px;
-  position: relative;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#ffe0f0;
+    text-align:center;
+    gap:20px;
+    position:relative;
 }
 
 #flower {
-  width: 100px;
-  height: 100px;
-  background: url('flower.png') no-repeat center/contain;
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+    width:100px;
+    height:100px;
+    background:url('flower.png') no-repeat center/contain;
+    cursor:pointer;
+    transition:transform 0.2s ease, opacity 0.2s ease;
 }
 
 .gift {
-  position: absolute;
-  font-size: 24px;
-  animation: fly 1s linear forwards;
-}
-@keyframes fly {
-  0% { transform: translate(0,0) rotate(0deg); opacity:1; }
-  100% { transform: translate(var(--x), var(--y)) rotate(360deg); opacity:0; }
+    position:absolute;
+    font-size:24px;
+    animation: fly 1s linear forwards;
 }
 
-/* ===== HALAMAN SURAT ===== */
+@keyframes fly {
+    0% { transform:translate(0,0) rotate(0deg); opacity:1; }
+    100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; }
+}
+
+/* Halaman surat */
 #letter-page {
-  display: none;
-  position: fixed;
-  top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.5);
-  justify-content: center;
-  align-items: center;
-  perspective: 1000px; /* 3D effect */
-  z-index: 10;
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+    perspective:1000px;
+    z-index:10;
 }
+
 #letter {
-  background: url('letter-bg.jpeg') no-repeat center/cover;
-  width: 90%;
-  max-width: 600px;
-  padding: 50px 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  transform-origin: left center; /* lipatan dari kiri */
-  transform: rotateY(-90deg);
-  opacity: 0;
-  transition: transform 1s ease, opacity 1s ease;
-  color: #333;
-  text-align: left;
-  overflow-y: auto;
-  max-height: 80vh;
+    background:url('letter-bg.jpeg') no-repeat center/cover;
+    width:90%; max-width:600px;
+    padding:50px 40px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    transform-origin:left center;
+    transform:rotateY(-90deg);
+    opacity:0;
+    transition:transform 1s ease, opacity 1s ease;
+    color: #333; 
+    text-align: left; 
+    overflow-y: auto; max-height: 80vh; }
+
+#letter.show { transform:rotateY(0deg); opacity:1; }
+
+#letter p {
+    line-height:1.6;
+    font-size:16px;
+    white-space:pre-wrap;
+    opacity:0;
+    transition:opacity 1s ease 0.5s;
 }
-#letter.show { transform: rotateY(0deg); opacity: 1; }
-#letter p { line-height:1.6; font-size:16px; white-space: pre-wrap; opacity:0; transition: opacity 1s ease 0.5s; }
-#letter.show p { opacity: 1; }
+
+#letter.show p { opacity:1; }
+
 #letter button {
-  display:block;
-  margin:20px auto 0;
-  background:#4ade80;
-  color:white;
-  padding:10px 25px;
-  border:none;
-  border-radius:25px;
-  cursor:pointer;
-  font-size:16px;
-  transition:0.3s;
+    display:block;
+    margin:20px auto 0;
+    background:#4ade80;
+    color:white;
+    padding:10px 25px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:16px;
 }
-#letter button:hover { background:#22c55e; transform:scale(1.05);}
 </style>
 </head>
+
 <body>
+
 <div id="content"></div>
+
 <audio id="bg-music" src="happy-birthday.mp3" loop></audio>
 
 <!-- HALAMAN BUNGA -->
 <div id="flower-page">
-  <h1>🌸 Tekan Bunga Ini! 🌸</h1>
-  <div id="flower"></div>
-  <button id="btnBackFlower">Kembali 🔙</button>
+    <h1>🌸 Tekan Bunga Ini! 🌸</h1>
+    <div id="flower"></div>
+    <button id="btnBackFlower">Kembali 🔙</button>
 </div>
 
 <!-- HALAMAN SURAT -->
-<div id="letter-page">
-  <div id="letter">
-    <h1>📜🎉</h1>
-    <p id="letter-text">
-Hey hey, makasih udah luangin waktu buat buka link ini. Happy birthday ya, semoga semua yang kamu impikan bisa tercapai. Tak lupa tetap usaha dan terus berdoa. Tetap semangat dan sehat terus ya!
+<div id="letter-page"> 
+    <div id="letter"> <h1>📜🎉</h1> 
+        <p id="letter-text"> 
+Hey hey, makasih udah luangin waktu buat buka link ini. Happy birthday ya, semoga semua yang kamu impikan bisa tercapai. Tetap usaha, dan terus berdoa. Tetap semangat dan sehat terus ya! 
+    
+Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered you. I hope we can still talk to each other without being angry. 
+    
+Setelah ini, hapus tab browser kamu / hapus history browser ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
 
-Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered you. I hope we can still talk to each other without being angry.
-
-Setelah ini, hapus tab browser / hapus history aplikasi browser ya! karena musiknya akan tetap nyala walau keluar dari browser 😄
-
-Jesus Bless You! ✨
-
--v
-    </p>
+Jesus Bless You! ✨ 
+    
+-v 
+</p>
     <button id="btnBackLetter">Kembali ke Awal 🔁</button>
-  </div>
 </div>
 
 <script>
-// Warna efek
+
+/* Efek dekorasi seperti di kode asli */
 const confettiColors=["#ff0a54","#ff477e","#ff85a1","#fbb1bd","#bde0fe"];
 const balloonColors=["#ff4b5c","#ffb400","#3cd070","#4d96ff","#ff8fab"];
-function createConfetti(){for(let i=0;i<40;i++){const c=document.createElement("div");c.classList.add("confetti");c.style.left=Math.random()*100+"vw";c.style.animationDuration=2+Math.random()*3+"s";c.style.setProperty("--color",confettiColors[Math.floor(Math.random()*confettiColors.length)]);document.body.appendChild(c);}}
-function createBalloons(){for(let i=0;i<10;i++){const b=document.createElement("div");b.classList.add("balloon");b.style.left=Math.random()*100+"vw";b.style.animationDuration=6+Math.random()*4+"s";b.style.setProperty("--color",balloonColors[Math.floor(Math.random()*balloonColors.length)]);document.body.appendChild(b);}}
-createConfetti(); createBalloons();
 
-// Musik tetap berjalan
+function createConfetti(){
+    for(let i=0;i<40;i++){
+        const c=document.createElement("div");
+        c.classList.add("confetti");
+        c.style.left=Math.random()*100+"vw";
+        c.style.animationDuration=2+Math.random()*3+"s";
+        c.style.setProperty("--color", confettiColors[Math.floor(Math.random()*confettiColors.length)]);
+        document.body.appendChild(c);
+    }
+}
+
+function createBalloons(){
+    for(let i=0;i<10;i++){
+        const b=document.createElement("div");
+        b.classList.add("balloon");
+        b.style.left=Math.random()*100+"vw";
+        b.style.animationDuration=6+Math.random()*4+"s";
+        b.style.setProperty("--color", balloonColors[Math.floor(Math.random()*balloonColors.length)]);
+        document.body.appendChild(b);
+    }
+}
+
+createConfetti();
+createBalloons();
+
+
+/* Musik */
 const bgMusic=document.getElementById("bg-music");
-document.body.addEventListener("click",()=>{if(bgMusic.paused) bgMusic.play().catch(()=>{});});
+
+document.body.addEventListener("click",()=>{
+    if(bgMusic.paused) bgMusic.play().catch(()=>{});
+});
 
 function changeMusicSmooth(newSrc, duration = 1000) {
-    const step = 50; const steps = duration / step; let currentStep = 0;
+    const step = 50;
+    const steps = duration / step;
+    let currentStep = 0;
     const initialVolume = bgMusic.volume;
+
     const fadeOut = setInterval(() => {
         currentStep++;
         bgMusic.volume = Math.max(initialVolume * (1 - currentStep/steps), 0);
+
         if(currentStep >= steps){
             clearInterval(fadeOut);
             bgMusic.src = newSrc;
             bgMusic.play().catch(()=>{});
+
             let fadeInStep = 0;
             const fadeIn = setInterval(() => {
                 fadeInStep++;
@@ -185,88 +315,108 @@ function changeMusicSmooth(newSrc, duration = 1000) {
     }, step);
 }
 
+/* Sistem Halaman */
 const content=document.getElementById("content");
 
-function tampilHalaman(html,nextFunc=null){content.classList.remove("show");setTimeout(()=>{content.innerHTML=html;content.classList.add("show");if(nextFunc)nextFunc();},500);}
+function tampilHalaman(html,nextFunc=null){
+    content.classList.remove("show");
+    setTimeout(()=>{
+        content.innerHTML=html;
+        content.classList.add("show");
+        if(nextFunc) nextFunc();
+    },500);
+}
 
-// Halaman Input Nama
+/* Halaman Input Nama */
 function halamanNama(){
     bgMusic.src="happy-birthday.mp3";
     bgMusic.play().catch(()=>{});
+
     tampilHalaman(`
         <h1>Masukkan Nama Kamu 🎈</h1>
         <input type="text" id="nama" placeholder="Nama kamu..." />
         <button id="btnNext">Lanjut ➜</button>
     `,()=>{
+
         document.getElementById("btnNext").onclick=()=>{
             const nama=document.getElementById("nama").value.trim();
             if(!nama) return alert("Masukkan namamu dulu 😊");
             localStorage.setItem("namaUser",nama);
             halamanUcapan();
         };
+
     });
 }
 
-// Halaman Ucapan
+/* Halaman Ucapan */
 function halamanUcapan(){
     const nama=localStorage.getItem("namaUser")||"Sahabat";
+
     tampilHalaman(`
         <h1>Happy Sweet Seventeen 🥳</h1>
         <p>Hai ${nama}, Happy Birthday! Wish u All the Best 🎂💖</p>
-        <p>🙌- 8 Februari 2009 - 🙌</p>
+        <p>🙌- 8 Februari 2026 - 🙌</p>
         <button id="btnDoa">Next ➜</button>
     `,()=>{
         document.getElementById("btnDoa").onclick=halamanDoa;
     });
 }
 
-// Halaman Doa
+/* Halaman Doa */
 function halamanDoa(){
     const nama=localStorage.getItem("namaUser")||"Sahabat";
+
     tampilHalaman(`
         <h1>Doa Untukmu 💐</h1>
         <p>${nama}, Semoga kamu selalu sehat, bahagia, dan penuh semangat belajar.</p>
         <p>Semoga impian dan cita-citamu tercapai, dan setiap hari dipenuhi tawa serta pengalaman baru yang berharga. 🌈✨</p>
         <p>Tuhan Yesus Memberkati! ✨</p>
         <p>(●'◡'●)</p>
-        <button id="btnFoto"> 📸 ➜</button>
+        <button id="btnFoto">📸 ➜</button>
     `,()=>{
         document.getElementById("btnFoto").onclick=halamanFoto;
     });
 }
 
-// Halaman Foto
+/* ===============================
+   HALAMAN FOTO (DITAMBAH OLEHKU)
+   =============================== */
 function halamanFoto(){
+
     bgMusic.src="memories.mp3";
     bgMusic.play().catch(()=>{});
+
     tampilHalaman(`
         <h1>📸🌟</h1>
+
         <div class="photo-grid">
-            <div class="polaroid" style="--rand:0.2"><img src="images/1.png"><div class="caption">hope</div></div>
-            <div class="polaroid" style="--rand:0.5"><img src="images/2.png"><div class="caption">all</div></div>
-            <div class="polaroid" style="--rand:0.8"><img src="images/3.png"><div class="caption">your</div></div>
-            <div class="polaroid" style="--rand:0.4"><img src="images/4.png"><div class="caption">wishes</div></div>
-            <div class="polaroid" style="--rand:0.7"><img src="images/5.png"><div class="caption">and</div></div>
-            <div class="polaroid" style="--rand:0.1"><img src="images/6.png"><div class="caption">dreams</div></div>
-            <div class="polaroid" style="--rand:0.9"><img src="images/7.png"><div class="caption">come</div></div>
-            <div class="polaroid" style="--rand:0.3"><img src="images/8.png"><div class="caption">true</div></div>
+            <div class="polaroid" style="--rand:0.1"><img src="images/1.png"><div class="caption">moment</div></div>
+            <div class="polaroid" style="--rand:0.3"><img src="images/2.png"><div class="caption">to</div></div>
+            <div class="polaroid" style="--rand:0.6"><img src="images/3.png"><div class="caption">remember</div></div>
+            <div class="polaroid" style="--rand:0.2"><img src="images/4.png"><div class="caption">for</div></div>
+            <div class="polaroid" style="--rand:0.5"><img src="images/5.png"><div class="caption">a</div></div>
+            <div class="polaroid" style="--rand:0.8"><img src="images/6.png"><div class="caption">lifetime</div></div>
         </div>
+
         <button id="btnFlower"> 🌸 ➜</button>
         <button id="btnKembali">Kembali ke Awal 🔁</button>
     `,()=>{
+
         document.getElementById("btnFlower").onclick = halamanFlower;
         document.getElementById("btnKembali").onclick = halamanNama;
+
     });
 }
 
-// Halaman Bunga Interaktif
+/* Halaman Bunga */
 function halamanFlower(){
     content.innerHTML = '';
     document.getElementById("flower-page").style.display = 'flex';
-    changeMusicSmooth('flower-music.mp3', 1500); 
-    
+    changeMusicSmooth('flower-music.mp3', 1500);
+
     const flower = document.getElementById("flower");
     flower.style.opacity = 1;
+
     let scale = 1;
     const maxScale = 3;
 
@@ -275,7 +425,9 @@ function halamanFlower(){
             scale += 0.3;
             flower.style.transform = `scale(${scale})`;
         } else {
+
             flower.style.opacity = 0;
+
             for(let i=0;i<50;i++){
                 const gift = document.createElement('div');
                 gift.classList.add('gift');
@@ -285,29 +437,30 @@ function halamanFlower(){
                 document.getElementById("flower-page").appendChild(gift);
                 setTimeout(()=>gift.remove(),1000);
             }
+
             for(let i=0;i<30;i++){
                 const c = document.createElement('div');
                 c.classList.add('confetti');
                 c.style.left = Math.random()*100 + "vw";
                 c.style.animationDuration = 2 + Math.random()*2 + "s";
-                c.style.setProperty("--color", ["#ff0a54","#ff477e","#ff85a1","#fbb1bd","#bde0fe"][Math.floor(Math.random()*5)]);
+                c.style.setProperty("--color", confettiColors[Math.floor(Math.random()*5)]);
                 document.getElementById("flower-page").appendChild(c);
                 setTimeout(()=>c.remove(),2000);
             }
+
             setTimeout(()=>{
                 scale = 1;
                 flower.style.transform = `scale(${scale})`;
                 flower.style.opacity = 1;
             },1000);
         }
-    }
+    };
 
     document.getElementById("btnBackFlower").onclick = () => {
         document.getElementById("flower-page").style.display = 'none';
         halamanNama();
-    }
+    };
 
-    // Tombol buka surat dari halaman bunga
     let flowerBtnLetter = document.getElementById("btnLetter");
     if(!flowerBtnLetter){
         flowerBtnLetter = document.createElement('button');
@@ -319,12 +472,15 @@ function halamanFlower(){
     }
 }
 
-// Halaman Surat
+/* Halaman Surat */
 function halamanLetter(){
     document.getElementById("flower-page").style.display = 'none';
+
     const letterPage = document.getElementById("letter-page");
     const letter = document.getElementById("letter");
+
     letterPage.style.display = 'flex';
+
     setTimeout(() => letter.classList.add('show'), 50);
 
     document.getElementById("btnBackLetter").onclick = () => {
@@ -333,11 +489,13 @@ function halamanLetter(){
             letterPage.style.display = 'none';
             halamanNama();
         }, 1000);
-    }
+    };
 }
 
-// Mulai web
+/* Mulai web */
 halamanNama();
+
 </script>
+
 </body>
 </html>
