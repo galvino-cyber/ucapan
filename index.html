@@ -106,12 +106,17 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 
 /* Foto Polaroid */
 .photo-grid {
-    display:flex;
-    flex-direction:row;
-    gap:15px;
-    justify-content:center;
-    overflow-x:auto;
-    margin:20px 0;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 20px 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.polaroid {
+    scroll-snap-align: center;
 }
 
 .polaroid {
@@ -369,7 +374,7 @@ function halamanDoa(){
     tampilHalaman(`
         <h1>Doa Untukmu 💐</h1>
         <p>${nama}, Semoga kamu selalu sehat, bahagia, dan penuh semangat belajar.</p>
-        <p>Semoga impian dan cita-citamu tercapai, dan setiap hari dipenuhi tawa serta pengalaman baru yang berharga. 🌈✨</p>
+        <p>Semoga impian dan cita-citamu tercapai, dan pengalaman baru yang berharga. 🌈✨</p>
         <p>Tuhan Yesus Memberkati! ✨</p>
         <p>(●'◡'●)</p>
         <button id="btnFoto">📸 ➜</button>
@@ -383,19 +388,18 @@ function halamanDoa(){
    =============================== */
 function halamanFoto(){
 
-    bgMusic.src="memories.mp3";
-    bgMusic.play().catch(()=>{});
+    changeMusicSmooth("memories.mp3", 1500);
 
     tampilHalaman(`
-        <h1>📸🌟</h1>
+        <h1>📸🌟</h1>s
 
         <div class="photo-grid">
-            <div class="polaroid" style="--rand:0.1"><img src="images/1.png"><div class="caption">moment</div></div>
-            <div class="polaroid" style="--rand:0.3"><img src="images/2.png"><div class="caption">to</div></div>
-            <div class="polaroid" style="--rand:0.6"><img src="images/3.png"><div class="caption">remember</div></div>
-            <div class="polaroid" style="--rand:0.2"><img src="images/4.png"><div class="caption">for</div></div>
-            <div class="polaroid" style="--rand:0.5"><img src="images/5.png"><div class="caption">a</div></div>
-            <div class="polaroid" style="--rand:0.8"><img src="images/6.png"><div class="caption">lifetime</div></div>
+            <div class="polaroid" style="--rand:0.1"><img src="images/1.png"><div class="caption">another</div></div>
+            <div class="polaroid" style="--rand:0.3"><img src="images/2.png"><div class="caption">year</div></div>
+            <div class="polaroid" style="--rand:0.6"><img src="images/3.png"><div class="caption">another</div></div>
+            <div class="polaroid" style="--rand:0.2"><img src="images/4.png"><div class="caption">beautifully</div></div>
+            <div class="polaroid" style="--rand:0.5"><img src="images/5.png"><div class="caption">written</div></div>
+            <div class="polaroid" style="--rand:0.8"><img src="images/6.png"><div class="caption">chapter</div></div>
         </div>
 
         <button id="btnFlower"> 🌸 ➜</button>
