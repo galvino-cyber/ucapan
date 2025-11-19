@@ -16,7 +16,11 @@ body {
     align-items:center;
     flex-direction:column;
     text-align:center;
-    overflow:hidden;
+
+    /* Fix */
+    overflow-x:hidden;   /* supaya konten tidak melebar keluar */
+    overflow-y:auto;     /* tapi scroll dalam halaman tetap hidup */
+    
     transition: background 0.5s ease;
 }
 
@@ -110,13 +114,19 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     flex-direction: row;
     gap: 15px;
     overflow-x: auto;
-    padding: 20px 10px;
-    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
+    padding: 15px;
+    width: 100%;
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+
+    /* FIX TERPENTING */
+    justify-content: flex-start !important;
 }
 
 .polaroid {
-    scroll-snap-align: center;
+    flex-shrink: 0;            /* Wajib supaya foto tidak mengecil */
+    scroll-snap-align: center; /* Untuk efek snap */
 }
 
 .polaroid {
