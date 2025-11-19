@@ -109,40 +109,49 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 #content.show { opacity:1; }
 
 /* Foto Polaroid */
-.photo-grid {
+.photo-slider {
     display: flex;
     flex-direction: row;
-    gap: 15px;
+    gap: 18px;
+
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 15px;
-    width: 100%;
-    -webkit-overflow-scrolling: touch;
+
+    padding: 20px 15px;
     scroll-snap-type: x mandatory;
 
-    /* FIX TERPENTING */
-    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch;
+
+    /* Agar slider selalu mulai dari kiri */
+    justify-content: flex-start;
 }
 
 .polaroid {
-    flex-shrink: 0;            /* Wajib supaya foto tidak mengecil */
-    scroll-snap-align: center; /* Untuk efek snap */
+    flex-shrink: 0;               /* Foto tidak mengecil */
+    width: 180px;                 /* Ukuran aman di HP */
+    scroll-snap-align: center;    /* Snap ke tengah */
+
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+
+    text-align: center;
 }
 
-.polaroid {
-    background:white;
-    padding:10px 10px 30px;
-    border-radius:8px;
-    width:140px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
-    transform:rotate(calc(-5deg + 10deg * var(--rand)));
-    transition:0.3s ease;
-    flex-shrink:0;
+.polaroid img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
 }
 
-.polaroid:hover { transform:scale(1.05) rotate(0deg); }
-
-.polaroid img { width:100%; border-radius:5px; }
+.polaroid p {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+}
 
 .polaroid .caption {
     margin-top:8px;
@@ -169,7 +178,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     height:100px;
     background:url('flower.png') no-repeat center/contain;
     cursor:pointer;
-    transition:transform 0.2s ease, opacity 0.2s ease;
+    transition:transform 7s ease, opacity 7s ease;
 }
 
 .gift {
@@ -403,14 +412,37 @@ function halamanFoto(){
     tampilHalaman(`
         <h1>📸🌟</h1>
 
-        <div class="photo-grid">
-            <div class="polaroid" style="--rand:0.1"><img src="images/1.png"><div class="caption">another</div></div>
-            <div class="polaroid" style="--rand:0.3"><img src="images/2.png"><div class="caption">year</div></div>
-            <div class="polaroid" style="--rand:0.6"><img src="images/3.png"><div class="caption">another</div></div>
-            <div class="polaroid" style="--rand:0.2"><img src="images/4.png"><div class="caption">beautifully</div></div>
-            <div class="polaroid" style="--rand:0.5"><img src="images/5.png"><div class="caption">written</div></div>
-            <div class="polaroid" style="--rand:0.8"><img src="images/6.png"><div class="caption">chapter</div></div>
-        </div>
+        <div class="photo-slider">
+    <div class="polaroid">
+        <img src="images/1.png" alt="">
+        <p>Caption 1</p>
+    </div>
+
+    <div class="polaroid">
+        <img src="images/2.png" alt="">
+        <p>Caption 2</p>
+    </div>
+
+    <div class="polaroid">
+        <img src="images/3.png" alt="">
+        <p>Caption 3</p>
+    </div>
+
+    <div class="polaroid">
+        <img src="images/4.png" alt="">
+        <p>Caption 4</p>
+    </div>
+
+    <div class="polaroid">
+        <img src="images/5.png" alt="">
+        <p>Caption 5</p>
+    </div>
+
+    <div class="polaroid">
+        <img src="images/6.png" alt="">
+        <p>Caption 6</p>
+    </div>
+</div>
 
         <button id="btnFlower"> 🌸 ➜</button>
         <button id="btnKembali">Kembali ke Awal 🔁</button>
@@ -424,66 +456,88 @@ function halamanFoto(){
 
 /* Halaman Bunga */
 function halamanFlower(){
-    content.innerHTML = '';
-    document.getElementById("flower-page").style.display = 'flex';
-    changeMusicSmooth('flower-music.mp3', 1500);
 
-    const flower = document.getElementById("flower");
-    flower.style.opacity = 1;
+    /* 1. Fade-out dulu */
+    content.classList.remove("show");
+    content.classList.add("page-fade");
 
-    let scale = 1;
-    const maxScale = 3;
+    setTimeout(() => {
+        /* 2. Kosongkan dan tampilkan flower page */
+        content.innerHTML = '';
+        const flowerPage = document.getElementById("flower-page");
+        flowerPage.style.display = 'flex';
 
-    flower.onclick = () => {
-        if(scale < maxScale){
-            scale += 0.3;
-            flower.style.transform = `scale(${scale})`;
-        } else {
+        /* 3. Fade-in */
+        setTimeout(() => {
+            flowerPage.classList.add("page-show");
+        }, 50);
 
-            flower.style.opacity = 0;
+        /* Musik transisi */
+        changeMusicSmooth('flower-music.mp3', 1500);
 
-            for(let i=0;i<50;i++){
-                const gift = document.createElement('div');
-                gift.classList.add('gift');
-                gift.style.setProperty('--x', (Math.random()*400-200)+'px');
-                gift.style.setProperty('--y', (Math.random()*-400)+'px');
-                gift.innerText = '🎁';
-                document.getElementById("flower-page").appendChild(gift);
-                setTimeout(()=>gift.remove(),1000);
-            }
 
-            for(let i=0;i<30;i++){
-                const c = document.createElement('div');
-                c.classList.add('confetti');
-                c.style.left = Math.random()*100 + "vw";
-                c.style.animationDuration = 2 + Math.random()*2 + "s";
-                c.style.setProperty("--color", confettiColors[Math.floor(Math.random()*5)]);
-                document.getElementById("flower-page").appendChild(c);
-                setTimeout(()=>c.remove(),2000);
-            }
+        /* === BAGIAN BUNGA (ASLI) === */
+        const flower = document.getElementById("flower");
+        flower.style.opacity = 1;
 
-            setTimeout(()=>{
-                scale = 1;
+        let scale = 1;
+        const maxScale = 3;
+
+        flower.onclick = () => {
+            if(scale < maxScale){
+                scale += 0.3;
                 flower.style.transform = `scale(${scale})`;
-                flower.style.opacity = 1;
-            },1000);
+            } else {
+
+                flower.style.opacity = 0;
+
+                for(let i=0;i<50;i++){
+                    const gift = document.createElement('div');
+                    gift.classList.add('gift');
+                    gift.style.setProperty('--x', (Math.random()*400-200)+'px');
+                    gift.style.setProperty('--y', (Math.random()*-400)+'px');
+                    gift.innerText = '🎁';
+                    flowerPage.appendChild(gift);
+                    setTimeout(()=>gift.remove(),1000);
+                }
+
+                for(let i=0;i<30;i++){
+                    const c = document.createElement('div');
+                    c.classList.add('confetti');
+                    c.style.left = Math.random()*100 + "vw";
+                    c.style.animationDuration = 2 + Math.random()*2 + "s";
+                    c.style.setProperty("--color", confettiColors[Math.floor(Math.random()*5)]);
+                    flowerPage.appendChild(c);
+                    setTimeout(()=>c.remove(),2000);
+                }
+
+                setTimeout(()=>{
+                    scale = 1;
+                    flower.style.transform = `scale(${scale})`;
+                    flower.style.opacity = 1;
+                },1000);
+            }
+        };
+
+        document.getElementById("btnBackFlower").onclick = () => {
+            flowerPage.classList.remove("page-show");
+            setTimeout(() => {
+                flowerPage.style.display = 'none';
+                halamanNama();
+            }, 600);
+        };
+
+        let flowerBtnLetter = document.getElementById("btnLetter");
+        if(!flowerBtnLetter){
+            flowerBtnLetter = document.createElement('button');
+            flowerBtnLetter.id = "btnLetter";
+            flowerBtnLetter.textContent = ' 📜 ➜';
+            flowerBtnLetter.style.marginTop = '20px';
+            flowerPage.appendChild(flowerBtnLetter);
+            flowerBtnLetter.onclick = halamanLetter;
         }
-    };
 
-    document.getElementById("btnBackFlower").onclick = () => {
-        document.getElementById("flower-page").style.display = 'none';
-        halamanNama();
-    };
-
-    let flowerBtnLetter = document.getElementById("btnLetter");
-    if(!flowerBtnLetter){
-        flowerBtnLetter = document.createElement('button');
-        flowerBtnLetter.id = "btnLetter";
-        flowerBtnLetter.textContent = ' 📜 ➜';
-        flowerBtnLetter.style.marginTop = '20px';
-        document.getElementById('flower-page').appendChild(flowerBtnLetter);
-        flowerBtnLetter.onclick = halamanLetter;
-    }
+    }, 400);
 }
 
 /* Halaman Surat */
