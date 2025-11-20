@@ -16,11 +16,8 @@ body {
     align-items:center;
     flex-direction:column;
     text-align:center;
-
-    /* Fix */
-    overflow-x:hidden;   /* supaya konten tidak melebar keluar */
-    overflow-y:auto;     /* tapi scroll dalam halaman tetap hidup */
-    
+    overflow-x:hidden;
+    overflow-y:auto;
     transition: background 0.5s ease;
 }
 
@@ -59,6 +56,15 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     p{font-size:16px;}
 }
 
+/* FX LAYER: container for global decorations (confetti/balloons) */
+#fx-layer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:9998; /* below firework-page which is 99999 */
+}
+#confetti-container, #balloon-container{ position:absolute; inset:0; pointer-events:none; }
+
 /* Balon */
 .balloon {
     position:absolute;
@@ -67,10 +73,9 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     height:80px;
     border-radius:50%;
     background:var(--color);
-    animation:floatUp 8s linear infinite;
-    opacity:0.9;
+    animation:floatUp 8s linear forwards; /* remove infinite -> we manage lifecycle in JS */
+    opacity:0.95;
 }
-
 .balloon::after {
     content:"";
     position:absolute;
@@ -81,9 +86,8 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     height:20px;
     background:#888;
 }
-
 @keyframes floatUp {
-    0%{transform:translateY(0);opacity:0.9;}
+    0%{transform:translateY(0);opacity:0.95;}
     100%{transform:translateY(-120vh);opacity:0;}
 }
 
@@ -95,10 +99,9 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     width:8px;
     height:14px;
     background:var(--color);
-    animation:fall 3s linear infinite;
+    animation:fall 3s linear forwards; /* use forwards and remove via JS */
     z-index:5;
 }
-
 @keyframes fall {
     0%{transform:translateY(-10px) rotate(0deg);opacity:1;}
     100%{transform:translateY(100vh) rotate(360deg);opacity:0;}
@@ -109,143 +112,78 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 #content.show { opacity:1; }
 
 /* Foto Polaroid */
-/* ======= CONTAINER SCROLL HORIZONTAL ======= */
-.story-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    width: 100%;
-    height: 100vh;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    padding: 20px 0;
-}
-
-/* ======= SETIAP FOTO ======= */
-.story-slide {
-    flex: 0 0 85%;
-    max-width: 350px;
-    margin: 0 20px;
-    scroll-snap-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* ======= FRAME POLAROID ======= */
-.polaroid {
-    background: #fff;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
-    width: 100%;
-    height: auto;
-}
-
-.polaroid img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    object-fit: cover;
-    user-select: none;
-    pointer-events: none;
-}
-
-.polaroid .caption {
-    margin-top:8px;
-    font-size:14px;
-    color:#555;
-    font-family:"Comic Sans MS";
-}
+.story-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: 100vh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding: 20px 0; }
+.story-slide { flex: 0 0 85%; max-width: 350px; margin: 0 20px; scroll-snap-align: center; display: flex; justify-content: center; align-items: center; }
+.polaroid { background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0px 6px 15px rgba(0,0,0,0.2); width: 100%; height: auto; }
+.polaroid img { width: 100%; height: auto; border-radius: 8px; object-fit: cover; user-select: none; pointer-events: none; }
+.polaroid .caption { margin-top:8px; font-size:14px; color:#555; font-family:"Comic Sans MS"; }
 
 /* Halaman bunga */
-#flower-page {
-    display:none;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    background:#ffe0f0;
-    text-align:center;
-    gap:20px;
-    position:relative;
-}
-
-#flower {
-    width:100px;
-    height:100px;
-    background:url('flower.png') no-repeat center/contain;
-    cursor:pointer;
-    transition:transform 0.2s ease, opacity 0.2s ease;
-}
-
-.gift {
-    position:absolute;
-    font-size:24px;
-    animation: fly 1s linear forwards;
-}
-
-@keyframes fly {
-    0% { transform:translate(0,0) rotate(0deg); opacity:1; }
-    100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; }
-}
+#flower-page { display:none; flex-direction:column; justify-content:center; align-items:center; min-height:100vh; background:#ffe0f0; text-align:center; gap:20px; position:relative; }
+#flower { width:100px; height:100px; background:url('flower.png') no-repeat center/contain; cursor:pointer; transition:transform 0.2s ease, opacity 0.2s ease; }
+.gift { position:absolute; font-size:24px; animation: fly 1s linear forwards; }
+@keyframes fly { 0% { transform:translate(0,0) rotate(0deg); opacity:1; } 100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; } }
 
 /* Halaman surat */
-#letter-page {
-    display:none;
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.5);
-    justify-content:center;
-    align-items:center;
-    perspective:1000px;
-    z-index:10;
-}
-
-#letter {
-    background:url('letter-bg.jpeg') no-repeat center/cover;
-    width:90%; max-width:600px;
-    padding:50px 40px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    transform-origin:left center;
-    transform:rotateY(-90deg);
-    opacity:0;
-    transition:transform 1s ease, opacity 1s ease;
-    color: #333; 
-    text-align: left; 
-    overflow-y: auto; max-height: 80vh; }
-
+#letter-page { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; perspective:1000px; z-index:10; }
+#letter { background:url('letter-bg.jpeg') no-repeat center/cover; width:90%; max-width:600px; padding:50px 40px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); transform-origin:left center; transform:rotateY(-90deg); opacity:0; transition:transform 1s ease, opacity 1s ease; color: #333; text-align: left; overflow-y: auto; max-height: 80vh; }
 #letter.show { transform:rotateY(0deg); opacity:1; }
-
-#letter p {
-    line-height:1.6;
-    font-size:16px;
-    white-space:pre-wrap;
-    opacity:0;
-    transition:opacity 1s ease 0.5s;
-}
-
+#letter p { line-height:1.6; font-size:16px; white-space:pre-wrap; opacity:0; transition:opacity 1s ease 0.5s; }
 #letter.show p { opacity:1; }
+#letter button { display:block; margin:20px auto 0; background:#4ade80; color:white; padding:10px 25px; border:none; border-radius:25px; cursor:pointer; font-size:16px; }
 
-#letter button {
-    display:block;
-    margin:20px auto 0;
-    background:#4ade80;
-    color:white;
-    padding:10px 25px;
-    border:none;
-    border-radius:25px;
-    cursor:pointer;
-    font-size:16px;
+/* ======= HALAMAN FIREWORK ======= */
+#firework-page {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
+
+#fw-canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+#fw-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 900;
+    font-size: 3.6rem;
+    background: linear-gradient(45deg, #ff5f6d, #ffcc00, #00f2ff, #bd00ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: 50;
+}
+
+#fw-text.show {
+    opacity: 1;
+}
+
+#btnCloseFire {
+    z-index: 60;
+}
+
+/* small helper to visually debug layers (remove later) */
 </style>
 </head>
 
 <body>
 
 <div id="content"></div>
+
+<!-- FX LAYER -->
+<div id="fx-layer">
+  <div id="confetti-container"></div>
+  <div id="balloon-container"></div>
+</div>
 
 <audio id="bg-music" src="happy-birthday.mp3" loop></audio>
 
@@ -264,59 +202,116 @@ Hey hey, makasih udah luangin waktu buat buka link ini. Happy birthday ya, semog
     
 Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered you. I hope we can still talk to each other without being angry. 
     
-Setelah ini, hapus tab browser kamu / hapus history browser ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
+Setelah ini, hapus tab browser / hapus history browser kamu ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
 
 Jesus Bless You! ✨ 
     
 -v 
 </p>
     <button id="btnBackLetter">Kembali ke Awal 🔁</button>
+    <button id="btnFirework">Lihat Kejutan 🎆</button>
+</div>
+</div>
+
+<!-- HALAMAN FIREWORK (ditambahkan) -->
+<div id="firework-page" style="display:none; position:fixed; inset:0; z-index:500;">
+    <canvas id="fw-canvas"></canvas>
+
+    <div id="fw-text"
+         style="
+            position:absolute; 
+            top:50%; 
+            left:50%; 
+            transform:translate(-50%, -50%);
+            font-size:48px; 
+            font-weight:900; 
+            font-family:'Comic Sans MS', cursive; 
+            color:white;
+            opacity:0;
+            transition:opacity .8s ease, transform .8s ease;
+            z-index:9999;
+        ">
+        Happy Birthday!
+    </div>
+
+    <button id="btnCloseFire" 
+            style="position:absolute; top:20px; right:20px; 
+            z-index:9999; display:none;">
+        Tutup ✖
+    </button>
 </div>
 
 <script>
+/* ==== GLOBAL VARS FOR DECORATION CONTROL ==== */
+let globalConfettiInterval = null;
+let globalBalloonInterval = null;
 
-/* Efek dekorasi seperti di kode asli */
+/* Efek dekorasi seperti di kode asli (now using containers and controllable intervals) */
 const confettiColors=["#ff0a54","#ff477e","#ff85a1","#fbb1bd","#bde0fe"];
 const balloonColors=["#ff4b5c","#ffb400","#3cd070","#4d96ff","#ff8fab"];
 
 function createConfetti(){
-    for(let i=0;i<40;i++){
+    const container = document.getElementById('confetti-container');
+    if(!container) return;
+    for(let i=0;i<20;i++){
         const c=document.createElement("div");
-        c.classList.add("confetti");
+        c.classList.add("confetti","global-decor");
         c.style.left=Math.random()*100+"vw";
-        c.style.animationDuration=2+Math.random()*3+"s";
-        c.style.setProperty("--color", confettiColors[Math.floor(Math.random()*confettiColors.length)]);
-        document.body.appendChild(c);
+        c.style.animationDuration=(2+Math.random()*3)+"s";
+        const color = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+        c.style.setProperty("--color", color);
+        c.style.background = color;
+        container.appendChild(c);
+        // remove after animation finishes
+        setTimeout(()=>{ if(c && c.parentNode) c.parentNode.removeChild(c); }, 5000);
     }
 }
 
 function createBalloons(){
-    for(let i=0;i<10;i++){
-        const b=document.createElement("div");
-        b.classList.add("balloon");
+    const container = document.getElementById('balloon-container');
+    if(!container) return;
+    for(let i=0;i<4;i++){
+        const b=document.createElement('div');
+        b.classList.add('balloon','global-decor');
         b.style.left=Math.random()*100+"vw";
-        b.style.animationDuration=6+Math.random()*4+"s";
-        b.style.setProperty("--color", balloonColors[Math.floor(Math.random()*balloonColors.length)]);
-        document.body.appendChild(b);
+        b.style.animationDuration=(6+Math.random()*4)+"s";
+        const color = balloonColors[Math.floor(Math.random()*balloonColors.length)];
+        b.style.setProperty('--color', color);
+        b.style.background = color;
+        container.appendChild(b);
+        // remove after animation
+        setTimeout(()=>{ if(b && b.parentNode) b.parentNode.removeChild(b); }, 10000);
     }
 }
 
-createConfetti();
-createBalloons();
+// start global decoration intervals (store ids so we can stop)
+function startGlobalDecor(){
+    // if already running, skip
+    if(!globalConfettiInterval) { createConfetti(); globalConfettiInterval = setInterval(createConfetti, 2500); }
+    if(!globalBalloonInterval) { createBalloons(); globalBalloonInterval = setInterval(createBalloons, 3500); }
+}
 
+function stopGlobalDecor(){
+    if(globalConfettiInterval){ clearInterval(globalConfettiInterval); globalConfettiInterval = null; }
+    if(globalBalloonInterval){ clearInterval(globalBalloonInterval); globalBalloonInterval = null; }
+    // remove any existing elements
+    document.querySelectorAll('.global-decor').forEach(el=>el.remove());
+}
+
+// start at load
+startGlobalDecor();
 
 /* Musik */
 const bgMusic=document.getElementById("bg-music");
 
-document.body.addEventListener("click",()=>{
-    if(bgMusic.paused) bgMusic.play().catch(()=>{});
-});
+// allow user to start music by first tap
+document.body.addEventListener("click",()=>{ if(bgMusic.paused) bgMusic.play().catch(()=>{}); }, { once:false });
 
 function changeMusicSmooth(newSrc, duration = 1000) {
     const step = 50;
     const steps = duration / step;
     let currentStep = 0;
-    const initialVolume = bgMusic.volume;
+    const initialVolume = bgMusic.volume || 1;
 
     const fadeOut = setInterval(() => {
         currentStep++;
@@ -400,11 +395,8 @@ function halamanDoa(){
     });
 }
 
-/* ===============================
-   HALAMAN FOTO (DITAMBAH OLEHKU)
-   =============================== */
+/* HALAMAN FOTO */
 function halamanFoto(){
-
     changeMusicSmooth("memories.mp3", 1500);
 
     tampilHalaman(`
@@ -430,27 +422,18 @@ function halamanFoto(){
 
 /* Halaman Bunga */
 function halamanFlower(){
-
-    /* 1. Fade-out dulu */
     content.classList.remove("show");
     content.classList.add("page-fade");
 
     setTimeout(() => {
-        /* 2. Kosongkan dan tampilkan flower page */
         content.innerHTML = '';
         const flowerPage = document.getElementById("flower-page");
         flowerPage.style.display = 'flex';
 
-        /* 3. Fade-in */
-        setTimeout(() => {
-            flowerPage.classList.add("page-show");
-        }, 50);
+        setTimeout(() => { flowerPage.classList.add("page-show"); }, 50);
 
-        /* Musik transisi */
         changeMusicSmooth('flower-music.mp3', 1500);
 
-
-        /* === BAGIAN BUNGA (ASLI) === */
         const flower = document.getElementById("flower");
         flower.style.opacity = 1;
 
@@ -462,7 +445,6 @@ function halamanFlower(){
                 scale += 0.3;
                 flower.style.transform = `scale(${scale})`;
             } else {
-
                 flower.style.opacity = 0;
 
                 for(let i=0;i<50;i++){
@@ -481,24 +463,18 @@ function halamanFlower(){
                     c.style.left = Math.random()*100 + "vw";
                     c.style.animationDuration = 2 + Math.random()*2 + "s";
                     c.style.setProperty("--color", confettiColors[Math.floor(Math.random()*5)]);
+                    c.style.background = c.style.getPropertyValue("--color");
                     flowerPage.appendChild(c);
                     setTimeout(()=>c.remove(),2000);
                 }
 
-                setTimeout(()=>{
-                    scale = 1;
-                    flower.style.transform = `scale(${scale})`;
-                    flower.style.opacity = 1;
-                },1000);
+                setTimeout(()=>{ scale = 1; flower.style.transform = `scale(${scale})`; flower.style.opacity = 1; },1000);
             }
         };
 
         document.getElementById("btnBackFlower").onclick = () => {
             flowerPage.classList.remove("page-show");
-            setTimeout(() => {
-                flowerPage.style.display = 'none';
-                halamanNama();
-            }, 600);
+            setTimeout(() => { flowerPage.style.display = 'none'; halamanNama(); }, 600);
         };
 
         let flowerBtnLetter = document.getElementById("btnLetter");
@@ -522,16 +498,106 @@ function halamanLetter(){
     const letter = document.getElementById("letter");
 
     letterPage.style.display = 'flex';
-
     setTimeout(() => letter.classList.add('show'), 50);
+
+    // bind firework button
+    document.getElementById("btnFirework").onclick = halamanFirework;
 
     document.getElementById("btnBackLetter").onclick = () => {
         letter.classList.remove('show');
-        setTimeout(() => {
-            letterPage.style.display = 'none';
-            halamanNama();
-        }, 1000);
+        setTimeout(() => { letterPage.style.display = 'none'; halamanNama(); }, 1000);
     };
+}
+
+/* Halaman Firework (musik tetap melanjut dari surat page) */
+let fireworkStarted = false;
+
+function halamanFirework(){
+
+    let fx = document.getElementById("confetti-wrapper");
+    if(fx) fx.style.display = "none";
+
+    let balloon = document.getElementById("balloon-layer");
+    if(balloon) balloon.style.display = "none";
+
+    document.getElementById("letter-page").style.display = "none";
+
+    const fwPage = document.getElementById("firework-page");
+    fwPage.style.display = "block";
+
+    const fwText = document.getElementById("fw-text");
+
+    // TUNDA MUNCUL 3 DETIK
+    setTimeout(() => fwText.classList.add("show"), 3000);
+
+    // FOKUS SUPAYA SPACEBAR BERFUNGSI
+    setTimeout(() => window.focus(), 500);
+
+    if(!fireworkStarted){
+        startFireworksOnCanvas();
+        fireworkStarted = true;
+    }
+
+    document.getElementById("btnCloseFire").style.display = "block";
+    document.getElementById("btnCloseFire").onclick = () => {
+        fwPage.style.display = "none";
+        halamanNama();
+    };
+}
+
+/* ==== FIREWORK ENGINE (canvas) ==== */
+function startFireworksOnCanvas(){
+    const canvas = document.getElementById('fw-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let W = canvas.width = innerWidth;
+    let H = canvas.height = innerHeight;
+
+    window.addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; });
+
+    const TAU = Math.PI*2;
+    const rand = (a,b)=>Math.random()*(b-a)+a;
+
+    class Rocket{ constructor(x,y,tx,ty,color){ this.x = x; this.y = y; this.tx = tx; this.ty = ty; this.vx = (tx - x) * 0.02 * rand(0.9,1.15); this.vy = (ty - y) * 0.02 * rand(0.9,1.15) - rand(4,7); this.age = 0; this.exploded=false; this.color = color || `hsl(${rand(0,360)}, 80%, 60%)`; }
+        step(){ this.vy += 0.12; this.x += this.vx; this.y += this.vy; this.age++; const dx = this.x - this.tx, dy = this.y - this.ty; if(!this.exploded && (this.age>40 || (dx*dx+dy*dy) < 4000 || this.vy>2)){ this.explode(); this.exploded = true; return true; } return false; }
+        explode(){ const count = Math.floor(rand(30,110)); for(let i=0;i<count;i++){ particles.push(new Particle(this.x,this.y,this.color)); } }
+        draw(ctx){ ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.beginPath(); ctx.fillStyle = this.color; ctx.arc(this.x,this.y,2.8,0,TAU); ctx.fill(); ctx.restore(); }
+    }
+
+    class Particle{ constructor(x,y,color){ this.x = x; this.y = y; const angle = rand(0,TAU); const speed = Math.pow(rand(0,1),0.6)*rand(1.8,8); this.vx = Math.cos(angle)*speed; this.vy = Math.sin(angle)*speed; this.life = rand(40,120); this.age = 0; this.size = rand(1,3); this.color = color || `hsl(${rand(0,360)}, 85%, 55%)`; this.fr = 0.98; this.alpha = 1; }
+        step(){ this.vy += 0.06; this.vx *= this.fr; this.vy *= this.fr; this.x += this.vx; this.y += this.vy; this.age++; this.alpha = Math.max(0, 1 - this.age/this.life); }
+        draw(ctx){ ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.fillStyle = this.color; ctx.arc(this.x,this.y,this.size,0,TAU); ctx.fill(); ctx.restore(); }
+    }
+
+    const particles = [];
+    const rockets = [];
+    let autoTimer = 0;
+    let auto = true;
+
+    function launchAt(x,tx,ty){ const col = `hsl(${rand(0,360)}, 80%, 60%)`; rockets.push(new Rocket(x,H+8,tx,ty,col)); }
+    function randomLaunch(){ const x = rand(W*0.15, W*0.85); const tx = rand(W*0.15, W*0.85); const ty = rand(H*0.12, H*0.45); launchAt(x,tx,ty); }
+
+    // pointer to launch
+    canvas.addEventListener('pointerdown', (ev)=>{ const clientX = ev.clientX, clientY = ev.clientY; launchAt(innerWidth/2 + rand(-80,80), clientX, clientY - rand(0,20)); });
+
+    // loop
+    function step(){ ctx.fillStyle = 'rgba(4,6,11,0.25)'; ctx.fillRect(0,0,W,H);
+
+        // rockets
+        for(let i=rockets.length-1;i>=0;i--){ const r = rockets[i]; const exploded = r.step(); r.draw(ctx); if(exploded) rockets.splice(i,1); }
+
+        // particles
+        for(let i=particles.length-1;i>=0;i--){ const p = particles[i]; p.step(); p.draw(ctx); if(p.age > p.life) particles.splice(i,1); }
+
+        // auto launch
+        if(auto){ autoTimer -= 1/60; if(autoTimer <= 0){ randomLaunch(); autoTimer = rand(0.4,1.6); } }
+
+        requestAnimationFrame(step);
+    }
+
+    // start with a few warmups
+    for(let i=0;i<4;i++) setTimeout(()=>randomLaunch(), i*350);
+    step();
 }
 
 /* Mulai web */
