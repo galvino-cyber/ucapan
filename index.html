@@ -132,45 +132,6 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 #letter.show p { opacity:1; }
 #letter button { display:block; margin:20px auto 0; background:#4ade80; color:white; padding:10px 25px; border:none; border-radius:25px; cursor:pointer; font-size:16px; }
 
-/* ======= HALAMAN FIREWORK ======= */
-#firework-page {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-
-#fw-canvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-}
-
-#fw-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: 900;
-    font-size: 3.6rem;
-    background: linear-gradient(45deg, #ff5f6d, #ffcc00, #00f2ff, #bd00ff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    opacity: 0;
-    transition: opacity 1s ease;
-    z-index: 50;
-}
-
-#fw-text.show {
-    opacity: 1;
-}
-
-#btnCloseFire {
-    z-index: 60;
-}
-
 /* small helper to visually debug layers (remove later) */
 </style>
 </head>
@@ -208,39 +169,7 @@ Jesus Bless You! ✨
     
 -v 
 </p>
-    <button id="btnBackLetter">Kembali ke Awal 🔁</button>
-    <button id="btnFirework">Lihat Kejutan 🎆</button>
 </div>
-</div>
-
-<!-- HALAMAN FIREWORK (ditambahkan) -->
-<div id="firework-page" style="display:none; position:fixed; inset:0; z-index:500;">
-    <canvas id="fw-canvas"></canvas>
-
-    <div id="fw-text"
-         style="
-            position:absolute; 
-            top:50%; 
-            left:50%; 
-            transform:translate(-50%, -50%);
-            font-size:48px; 
-            font-weight:900; 
-            font-family:'Comic Sans MS', cursive; 
-            color:white;
-            opacity:0;
-            transition:opacity .8s ease, transform .8s ease;
-            z-index:9999;
-        ">
-        Happy Birthday!
-    </div>
-
-    <button id="btnCloseFire" 
-            style="position:absolute; top:20px; right:20px; 
-            z-index:9999; display:none;">
-        Tutup ✖
-    </button>
-</div>
-
 <script>
 /* ==== GLOBAL VARS FOR DECORATION CONTROL ==== */
 let globalConfettiInterval = null;
@@ -498,106 +427,27 @@ function halamanLetter(){
     const letter = document.getElementById("letter");
 
     letterPage.style.display = 'flex';
-    setTimeout(() => letter.classList.add('show'), 50);
 
-    // bind firework button
-    document.getElementById("btnFirework").onclick = halamanFirework;
+    // Tampilkan surat
+    setTimeout(() => {
+        letter.classList.add('show');
+    }, 50);
 
-    document.getElementById("btnBackLetter").onclick = () => {
-        letter.classList.remove('show');
-        setTimeout(() => { letterPage.style.display = 'none'; halamanNama(); }, 1000);
-    };
-}
+    // Tombol close di dalam surat
+    if(!document.getElementById("btnCloseLetter")){
+        const btn = document.createElement("button");
+        btn.id = "btnCloseLetter";
+        btn.textContent = "Exit";
+        letter.appendChild(btn);
 
-/* Halaman Firework (musik tetap melanjut dari surat page) */
-let fireworkStarted = false;
-
-function halamanFirework(){
-
-    let fx = document.getElementById("confetti-wrapper");
-    if(fx) fx.style.display = "none";
-
-    let balloon = document.getElementById("balloon-layer");
-    if(balloon) balloon.style.display = "none";
-
-    document.getElementById("letter-page").style.display = "none";
-
-    const fwPage = document.getElementById("firework-page");
-    fwPage.style.display = "block";
-
-    const fwText = document.getElementById("fw-text");
-
-    // TUNDA MUNCUL 3 DETIK
-    setTimeout(() => fwText.classList.add("show"), 3000);
-
-    // FOKUS SUPAYA SPACEBAR BERFUNGSI
-    setTimeout(() => window.focus(), 500);
-
-    if(!fireworkStarted){
-        startFireworksOnCanvas();
-        fireworkStarted = true;
+        btn.onclick = () => {
+            letter.classList.remove("show");
+            setTimeout(() => {
+                letterPage.style.display = "none";
+                halamanNama();
+            }, 800);
+        };
     }
-
-    document.getElementById("btnCloseFire").style.display = "block";
-    document.getElementById("btnCloseFire").onclick = () => {
-        fwPage.style.display = "none";
-        halamanNama();
-    };
-}
-
-/* ==== FIREWORK ENGINE (canvas) ==== */
-function startFireworksOnCanvas(){
-    const canvas = document.getElementById('fw-canvas');
-    const ctx = canvas.getContext('2d');
-
-    let W = canvas.width = innerWidth;
-    let H = canvas.height = innerHeight;
-
-    window.addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; });
-
-    const TAU = Math.PI*2;
-    const rand = (a,b)=>Math.random()*(b-a)+a;
-
-    class Rocket{ constructor(x,y,tx,ty,color){ this.x = x; this.y = y; this.tx = tx; this.ty = ty; this.vx = (tx - x) * 0.02 * rand(0.9,1.15); this.vy = (ty - y) * 0.02 * rand(0.9,1.15) - rand(4,7); this.age = 0; this.exploded=false; this.color = color || `hsl(${rand(0,360)}, 80%, 60%)`; }
-        step(){ this.vy += 0.12; this.x += this.vx; this.y += this.vy; this.age++; const dx = this.x - this.tx, dy = this.y - this.ty; if(!this.exploded && (this.age>40 || (dx*dx+dy*dy) < 4000 || this.vy>2)){ this.explode(); this.exploded = true; return true; } return false; }
-        explode(){ const count = Math.floor(rand(30,110)); for(let i=0;i<count;i++){ particles.push(new Particle(this.x,this.y,this.color)); } }
-        draw(ctx){ ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.beginPath(); ctx.fillStyle = this.color; ctx.arc(this.x,this.y,2.8,0,TAU); ctx.fill(); ctx.restore(); }
-    }
-
-    class Particle{ constructor(x,y,color){ this.x = x; this.y = y; const angle = rand(0,TAU); const speed = Math.pow(rand(0,1),0.6)*rand(1.8,8); this.vx = Math.cos(angle)*speed; this.vy = Math.sin(angle)*speed; this.life = rand(40,120); this.age = 0; this.size = rand(1,3); this.color = color || `hsl(${rand(0,360)}, 85%, 55%)`; this.fr = 0.98; this.alpha = 1; }
-        step(){ this.vy += 0.06; this.vx *= this.fr; this.vy *= this.fr; this.x += this.vx; this.y += this.vy; this.age++; this.alpha = Math.max(0, 1 - this.age/this.life); }
-        draw(ctx){ ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.fillStyle = this.color; ctx.arc(this.x,this.y,this.size,0,TAU); ctx.fill(); ctx.restore(); }
-    }
-
-    const particles = [];
-    const rockets = [];
-    let autoTimer = 0;
-    let auto = true;
-
-    function launchAt(x,tx,ty){ const col = `hsl(${rand(0,360)}, 80%, 60%)`; rockets.push(new Rocket(x,H+8,tx,ty,col)); }
-    function randomLaunch(){ const x = rand(W*0.15, W*0.85); const tx = rand(W*0.15, W*0.85); const ty = rand(H*0.12, H*0.45); launchAt(x,tx,ty); }
-
-    // pointer to launch
-    canvas.addEventListener('pointerdown', (ev)=>{ const clientX = ev.clientX, clientY = ev.clientY; launchAt(innerWidth/2 + rand(-80,80), clientX, clientY - rand(0,20)); });
-
-    // loop
-    function step(){ ctx.fillStyle = 'rgba(4,6,11,0.25)'; ctx.fillRect(0,0,W,H);
-
-        // rockets
-        for(let i=rockets.length-1;i>=0;i--){ const r = rockets[i]; const exploded = r.step(); r.draw(ctx); if(exploded) rockets.splice(i,1); }
-
-        // particles
-        for(let i=particles.length-1;i>=0;i--){ const p = particles[i]; p.step(); p.draw(ctx); if(p.age > p.life) particles.splice(i,1); }
-
-        // auto launch
-        if(auto){ autoTimer -= 1/60; if(autoTimer <= 0){ randomLaunch(); autoTimer = rand(0.4,1.6); } }
-
-        requestAnimationFrame(step);
-    }
-
-    // start with a few warmups
-    for(let i=0;i<4;i++) setTimeout(()=>randomLaunch(), i*350);
-    step();
 }
 
 /* Mulai web */
