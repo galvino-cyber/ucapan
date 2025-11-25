@@ -133,6 +133,19 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 #letter button { display:block; margin:20px auto 0; background:#4ade80; color:white; padding:10px 25px; border:none; border-radius:25px; cursor:pointer; font-size:16px; }
 
 /* small helper to visually debug layers (remove later) */
+/* Watermark sederhana selalu di bawah layar */
+.watermark {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  padding: 6px 0;
+  pointer-events: none;
+  font-family: "Comic Sans MS", sans-serif;
+  text-align: center;
+}
 </style>
 </head>
 
@@ -145,6 +158,8 @@ button:hover { background:#22c55e; transform:scale(1.05); }
   <div id="confetti-container"></div>
   <div id="balloon-container"></div>
 </div>
+<!-- Watermark -->
+<div class="watermark">Made with ❤️ by Vino</div>
 
 <audio id="bg-music" src="happy-birthday.mp3" loop></audio>
 
