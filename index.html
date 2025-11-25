@@ -232,6 +232,7 @@ startGlobalDecor();
 
 /* Musik */
 const bgMusic=document.getElementById("bg-music");
+bgMusic.volume = 0.1; // atur sesuai kebutuhan
 
 // allow user to start music by first tap
 document.body.addEventListener("click",()=>{ if(bgMusic.paused) bgMusic.play().catch(()=>{}); }, { once:false });
