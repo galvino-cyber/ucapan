@@ -1,3 +1,4 @@
+<!-- ============================== HTML: STRUCTURE ============================== -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,9 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ucapan Ulang Tahun 🎉</title>
 
+<!-- ============================== CSS: STYLING ============================== -->
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:"Comic Sans MS",sans-serif; }
 
+/* CSS: BODY */
 body {
     background:pink;
     min-height:100vh;
@@ -21,9 +24,11 @@ body {
     transition: background 0.5s ease;
 }
 
+/* CSS: TEXT */
 h1 { font-size:2.2em; color:#333; margin-bottom:10px; animation:fadeIn 1s ease; }
 p { font-size:18px; color:#444; margin:10px 0; line-height:1.5; animation:fadeIn 1.5s ease; }
 
+/* CSS: INPUT */
 input {
     padding:10px;
     border:1px solid #aaa;
@@ -33,6 +38,7 @@ input {
     outline:none;
 }
 
+/* CSS: BUTTON */
 button {
     margin-top:30px;
     background:#4ade80;
@@ -47,16 +53,16 @@ button {
 
 button:hover { background:#22c55e; transform:scale(1.05); }
 
-/* Animasi */
+/* CSS: ANIMATION */
 @keyframes fadeIn { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:translateY(0);} }
 
-/* Responsif */
+/* CSS: RESPONSIVE */
 @media(max-width:600px){
     h1{font-size:1.8em;}
     p{font-size:16px;}
 }
 
-/* FX LAYER: container for global decorations (confetti/balloons) */
+/* CSS: FX LAYER */
 #fx-layer{
     position:fixed;
     inset:0;
@@ -65,7 +71,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 }
 #confetti-container, #balloon-container{ position:absolute; inset:0; pointer-events:none; }
 
-/* Balon */
+/* CSS: BALLON */
 .balloon {
     position:absolute;
     bottom:-150px;
@@ -91,7 +97,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     100%{transform:translateY(-120vh);opacity:0;}
 }
 
-/* Konfeti */
+/* CSS: CONFETTI */
 .confetti {
     position:fixed;
     top:0;
@@ -107,24 +113,24 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     100%{transform:translateY(100vh) rotate(360deg);opacity:0;}
 }
 
-/* Transisi konten */
+/* CSS: CONTENT TRANSITION */
 #content { opacity:0; transition:opacity 0.8s ease; }
 #content.show { opacity:1; }
 
-/* Foto Polaroid */
+/* CSS: STORY / POLAROID */
 .story-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: 100vh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding: 20px 0; }
 .story-slide { flex: 0 0 85%; max-width: 350px; margin: 0 20px; scroll-snap-align: center; display: flex; justify-content: center; align-items: center; }
 .polaroid { background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0px 6px 15px rgba(0,0,0,0.2); width: 100%; height: auto; }
 .polaroid img { width: 100%; height: auto; border-radius: 8px; object-fit: cover; user-select: none; pointer-events: none; }
 .polaroid .caption { margin-top:8px; font-size:14px; color:#555; font-family:"Comic Sans MS"; }
 
-/* Halaman bunga */
+/* CSS: FLOWER PAGE */
 #flower-page { display:none; flex-direction:column; justify-content:center; align-items:center; min-height:100vh; background:#ffe0f0; text-align:center; gap:20px; position:relative; }
 #flower { width:100px; height:100px; background:url('flower.png') no-repeat center/contain; cursor:pointer; transition:transform 0.2s ease, opacity 0.2s ease; }
 .gift { position:absolute; font-size:24px; animation: fly 1s linear forwards; }
 @keyframes fly { 0% { transform:translate(0,0) rotate(0deg); opacity:1; } 100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; } }
 
-/* Halaman surat */
+/* CSS: LETTER PAGE */
 #letter-page { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; perspective:1000px; z-index:10; }
 #letter { background:url('letter-bg.jpeg') no-repeat center/cover; width:90%; max-width:600px; padding:50px 40px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); transform-origin:left center; transform:rotateY(-90deg); opacity:0; transition:transform 1s ease, opacity 1s ease; color: #333; text-align: left; overflow-y: auto; max-height: 80vh; }
 #letter.show { transform:rotateY(0deg); opacity:1; }
@@ -132,8 +138,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 #letter.show p { opacity:1; }
 #letter button { display:block; margin:20px auto 0; background:#4ade80; color:white; padding:10px 25px; border:none; border-radius:25px; cursor:pointer; font-size:16px; }
 
-/* small helper to visually debug layers (remove later) */
-/* Watermark sederhana selalu di bawah layar */
+/* CSS: WATERMARK */
 .watermark {
   position: fixed;
   bottom: 0;
@@ -149,28 +154,31 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 </style>
 </head>
 
+<!-- ============================== HTML: BODY ============================== -->
 <body>
 
 <div id="content"></div>
 
-<!-- FX LAYER -->
+<!-- HTML: FX LAYER -->
 <div id="fx-layer">
   <div id="confetti-container"></div>
   <div id="balloon-container"></div>
 </div>
-<!-- Watermark -->
+
+<!-- HTML: WATERMARK -->
 <div class="watermark">Made with ❤️ by v</div>
 
+<!-- HTML: AUDIO -->
 <audio id="bg-music" src="happy-birthday.mp3" loop></audio>
 
-<!-- HALAMAN BUNGA -->
+<!-- HTML: FLOWER PAGE -->
 <div id="flower-page">
     <h1>🌸 Press the Flower! 🌸</h1>
     <div id="flower"></div>
     <button id="btnBackFlower">Kembali 🔙</button>
 </div>
 
-<!-- HALAMAN SURAT -->
+<!-- HTML: LETTER PAGE -->
 <div id="letter-page"> 
     <div id="letter"> <h1>📜🎉</h1> 
         <p id="letter-text"> 
@@ -187,12 +195,15 @@ Jesus Bless You! ✨
 -v 
 </p>
 </div>
+
+<!-- ============================== JAVASCRIPT: SCRIPT ============================== -->
 <script>
-/* ==== GLOBAL VARS FOR DECORATION CONTROL ==== */
+
+// JAVASCRIPT: GLOBAL VARIABLES
 let globalConfettiInterval = null;
 let globalBalloonInterval = null;
 
-/* Efek dekorasi seperti di kode asli (now using containers and controllable intervals) */
+// JAVASCRIPT: DECORATION SYSTEM
 const confettiColors=["#ff0a54","#ff477e","#ff85a1","#fbb1bd","#bde0fe"];
 const balloonColors=["#ff4b5c","#ffb400","#3cd070","#4d96ff","#ff8fab"];
 
@@ -247,7 +258,7 @@ function stopGlobalDecor(){
 // start at load
 startGlobalDecor();
 
-/* Musik */
+// JAVASCRIPT: MUSIC SYSTEM
 const bgMusic=document.getElementById("bg-music");
 bgMusic.volume = 1; // atur sesuai kebutuhan
 
@@ -279,7 +290,7 @@ function changeMusicSmooth(newSrc, duration = 1000) {
     }, step);
 }
 
-/* Sistem Halaman */
+// JAVASCRIPT: PAGE SYSTEM
 const content=document.getElementById("content");
 
 function tampilHalaman(html,nextFunc=null){
@@ -291,7 +302,7 @@ function tampilHalaman(html,nextFunc=null){
     },500);
 }
 
-/* Halaman Input Nama */
+// JAVASCRIPT: PAGE SYSTEM
 function halamanNama(){
     bgMusic.src="happy-birthday.mp3";
     bgMusic.play().catch(()=>{});
@@ -312,7 +323,7 @@ function halamanNama(){
     });
 }
 
-/* Halaman Ucapan */
+// JAVASCRIPT: PAGE SYSTEM
 function halamanUcapan(){
     const nama=localStorage.getItem("namaUser")||"Sahabat";
 
@@ -326,7 +337,7 @@ function halamanUcapan(){
     });
 }
 
-/* Halaman Doa */
+// JAVASCRIPT: PAGE SYSTEM
 function halamanDoa(){
     const nama=localStorage.getItem("namaUser")||"Sahabat";
 
@@ -342,7 +353,7 @@ function halamanDoa(){
     });
 }
 
-/* HALAMAN FOTO */
+// JAVASCRIPT: PAGE SYSTEM
 function halamanFoto(){
     changeMusicSmooth("memories.mp3", 1500);
 
@@ -367,7 +378,7 @@ function halamanFoto(){
     });
 }
 
-/* Halaman Bunga */
+// JAVASCRIPT: PAGE SYSTEM
 function halamanFlower(){
     content.classList.remove("show");
     content.classList.add("page-fade");
@@ -437,7 +448,7 @@ function halamanFlower(){
     }, 400);
 }
 
-/* Halaman Surat */
+// JAVASCRIPT: PAGE SYSTEM
 function halamanLetter(){
     document.getElementById("flower-page").style.display = 'none';
 
@@ -468,7 +479,7 @@ function halamanLetter(){
     }
 }
 
-/* Mulai web */
+// JAVASCRIPT: START PAGE
 halamanNama();
 
 </script>
