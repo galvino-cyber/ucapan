@@ -333,14 +333,23 @@ bgMusic.volume = 0.3;
 
 // JAVASCRIPT: VOLUME SLIDER (ADDED)
 const volumeSlider=document.getElementById("volumeSlider");
+// ==== VOLUME SYNC: READ SAVED VOLUME (FROM WEB GATE) ====
+let savedVolume = localStorage.getItem("globalVolume");
+if (savedVolume !== null) {
+    bgMusic.volume = parseFloat(savedVolume);
+    volumeSlider.value = parseFloat(savedVolume);
+}
 function updateSliderUI() {
     const val = volumeSlider.value;
     bgMusic.volume = val;
 
-    // indikator ala versi awal (pink → transparan)
+    // indikator slider
     const percent = val * 100;
     volumeSlider.style.background =
         `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
+
+    // ==== VOLUME SYNC: SAVE ====
+    localStorage.setItem("globalVolume", val);
 }
 
 updateSliderUI();
@@ -367,6 +376,7 @@ function changeMusicSmooth(newSrc, duration=1000){
             let fadeInStep=0;
             const fadeIn=setInterval(()=>{
                 fadeInStep++;
+                let target = parseFloat(localStorage.getItem("globalVolume") || volumeSlider.value || 1);
                 bgMusic.volume=Math.min(fadeInStep/steps,1);
                 if(fadeInStep>=steps) clearInterval(fadeIn);
             },step);
