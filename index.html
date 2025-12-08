@@ -353,7 +353,29 @@ function updateSliderUI() {
 }
 
 updateSliderUI();
-volumeSlider.addEventListener("input", updateSliderUI);
+volumeSlider.addEventListener("input", () => {
+    const val = volumeSlider.value;
+    bgMusic.volume = val;
+
+    // 🔹 simpan volume global ke localStorage
+    localStorage.setItem("globalVolume", val);
+
+    const percent = val * 100;
+    volumeSlider.style.background =
+        `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
+});
+
+// 🔹 Fungsi sinkronisasi volume global
+function syncVolume() {
+    const saved = localStorage.getItem("globalVolume");
+    if (saved !== null) {
+        bgMusic.volume = parseFloat(saved);
+        volumeSlider.value = saved;
+        const percent = saved * 100;
+        volumeSlider.style.background =
+            `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
+    }
+}
 
 // allow user to start music
 document.body.addEventListener("click",()=>{ if(bgMusic.paused) bgMusic.play().catch(()=>{}); });
@@ -392,6 +414,8 @@ function tampilHalaman(html,nextFunc=null){
     setTimeout(()=>{
         content.innerHTML=html;
         content.classList.add("show");
+        // 🔹 Sinkronisasi volume setiap halaman
+        syncVolume();
         if(nextFunc) nextFunc();
     },500);
 }
