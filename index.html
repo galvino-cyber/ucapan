@@ -67,7 +67,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     position:fixed;
     inset:0;
     pointer-events:none;
-    z-index:9998; /* below firework-page which is 99999 */
+    z-index:9998;
 }
 #confetti-container, #balloon-container{ position:absolute; inset:0; pointer-events:none; }
 
@@ -79,7 +79,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     height:80px;
     border-radius:50%;
     background:var(--color);
-    animation:floatUp 8s linear forwards; /* remove infinite -> we manage lifecycle in JS */
+    animation:floatUp 8s linear forwards;
     opacity:0.95;
 }
 .balloon::after {
@@ -105,8 +105,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
     width:8px;
     height:14px;
     background:var(--color);
-    animation:fall 3s linear forwards; /* use forwards and remove via JS */
-    z-index:5;
+    animation:fall 3s linear forwards;
 }
 @keyframes fall {
     0%{transform:translateY(-10px) rotate(0deg);opacity:1;}
@@ -122,7 +121,7 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 .story-slide { flex: 0 0 85%; max-width: 350px; margin: 0 20px; scroll-snap-align: center; display: flex; justify-content: center; align-items: center; }
 .polaroid { background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0px 6px 15px rgba(0,0,0,0.2); width: 100%; height: auto; }
 .polaroid img { width: 100%; height: auto; border-radius: 8px; object-fit: cover; user-select: none; pointer-events: none; }
-.polaroid .caption { margin-top:8px; font-size:14px; color:#555; font-family:"Comic Sans MS"; }
+.polaroid .caption { margin-top:8px; font-size:14px; color:#555; }
 
 /* CSS: FLOWER PAGE */
 #flower-page { display:none; flex-direction:column; justify-content:center; align-items:center; min-height:100vh; background:#ffe0f0; text-align:center; gap:20px; position:relative; }
@@ -148,8 +147,78 @@ button:hover { background:#22c55e; transform:scale(1.05); }
   color: rgba(255,255,255,0.5);
   padding: 6px 0;
   pointer-events: none;
-  font-family: "Comic Sans MS", sans-serif;
-  text-align: center;
+  text-align:center;
+}
+
+/* ====================== CSS: VOLUME SLIDER (ADDED) ====================== */
+/* BOX NEON */
+#volumeBox {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px 16px;
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 12px #ff00ff80, 0 0 18px #ff00ff40 inset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 99999;
+}
+
+/* Label neon */
+#volumeBox label {
+    color: #fff;
+    font-size: 14px;
+    text-shadow: 0 0 6px #ff00ff;
+}
+
+/* SLIDER AREA */
+#volumeSlider {
+    appearance: none;
+    width: 160px;
+    height: 8px;
+    border-radius: 6px;
+
+    /* === indikator tetap seperti awal === */
+    background: linear-gradient(90deg, #ff7eb3 30%, #ffffff50 30%);
+
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 0 8px #ff00ff60 inset;
+}
+
+/* SLIDER THUMB NEON */
+#volumeSlider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+
+    /* NEON EFFECT */
+    box-shadow:
+        0 0 10px #ff00ff,
+        0 0 16px #ff00ff,
+        0 0 26px #ff00ff,
+        0 0 36px #ff00ff;
+
+    border: 2px solid #ff00ff;
+}
+
+#volumeSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    border-radius: 50%;
+    border: 2px solid #ff00ff;
+    box-shadow:
+        0 0 10px #ff00ff,
+        0 0 16px #ff00ff,
+        0 0 26px #ff00ff,
+        0 0 36px #ff00ff;
 }
 </style>
 </head>
@@ -170,6 +239,12 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 
 <!-- HTML: AUDIO -->
 <audio id="bg-music" src="happy-birthday.mp3" loop></audio>
+
+<!-- ====================== HTML: VOLUME SLIDER (ADDED) ====================== -->
+<div id="volumeBox">
+    <div id="volumeIcon">🔊</div>
+    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.3">
+</div>
 
 <!-- HTML: FLOWER PAGE -->
 <div id="flower-page">
@@ -219,13 +294,12 @@ function createConfetti(){
         c.style.setProperty("--color", color);
         c.style.background = color;
         container.appendChild(c);
-        // remove after animation finishes
         setTimeout(()=>{ if(c && c.parentNode) c.parentNode.removeChild(c); }, 5000);
     }
 }
 
 function createBalloons(){
-    const container = document.getElementById('balloon-container');
+    const container=document.getElementById('balloon-container');
     if(!container) return;
     for(let i=0;i<4;i++){
         const b=document.createElement('div');
@@ -236,58 +310,68 @@ function createBalloons(){
         b.style.setProperty('--color', color);
         b.style.background = color;
         container.appendChild(b);
-        // remove after animation
         setTimeout(()=>{ if(b && b.parentNode) b.parentNode.removeChild(b); }, 10000);
     }
 }
 
-// start global decoration intervals (store ids so we can stop)
 function startGlobalDecor(){
-    // if already running, skip
-    if(!globalConfettiInterval) { createConfetti(); globalConfettiInterval = setInterval(createConfetti, 2500); }
-    if(!globalBalloonInterval) { createBalloons(); globalBalloonInterval = setInterval(createBalloons, 3500); }
+    if(!globalConfettiInterval){ createConfetti(); globalConfettiInterval=setInterval(createConfetti,2500); }
+    if(!globalBalloonInterval){ createBalloons(); globalBalloonInterval=setInterval(createBalloons,3500); }
 }
 
 function stopGlobalDecor(){
-    if(globalConfettiInterval){ clearInterval(globalConfettiInterval); globalConfettiInterval = null; }
-    if(globalBalloonInterval){ clearInterval(globalBalloonInterval); globalBalloonInterval = null; }
-    // remove any existing elements
+    if(globalConfettiInterval){ clearInterval(globalConfettiInterval); globalConfettiInterval=null; }
+    if(globalBalloonInterval){ clearInterval(globalBalloonInterval); globalBalloonInterval=null; }
     document.querySelectorAll('.global-decor').forEach(el=>el.remove());
 }
 
-// start at load
 startGlobalDecor();
 
 // JAVASCRIPT: MUSIC SYSTEM
 const bgMusic=document.getElementById("bg-music");
-bgMusic.volume = 1; // atur sesuai kebutuhan
+bgMusic.volume = 0.3;
 
-// allow user to start music by first tap
-document.body.addEventListener("click",()=>{ if(bgMusic.paused) bgMusic.play().catch(()=>{}); }, { once:false });
+// JAVASCRIPT: VOLUME SLIDER (ADDED)
+const volumeSlider=document.getElementById("volumeSlider");
+function updateSliderUI() {
+    const val = volumeSlider.value;
+    bgMusic.volume = val;
 
-function changeMusicSmooth(newSrc, duration = 1000) {
-    const step = 50;
-    const steps = duration / step;
-    let currentStep = 0;
-    const initialVolume = bgMusic.volume || 1;
+    // indikator ala versi awal (pink → transparan)
+    const percent = val * 100;
+    volumeSlider.style.background =
+        `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
+}
 
-    const fadeOut = setInterval(() => {
+updateSliderUI();
+volumeSlider.addEventListener("input", updateSliderUI);
+
+// allow user to start music
+document.body.addEventListener("click",()=>{ if(bgMusic.paused) bgMusic.play().catch(()=>{}); });
+
+function changeMusicSmooth(newSrc, duration=1000){
+    const step=50;
+    const steps=duration/step;
+    let currentStep=0;
+    const initialVolume=bgMusic.volume||1;
+
+    const fadeOut=setInterval(()=>{
         currentStep++;
-        bgMusic.volume = Math.max(initialVolume * (1 - currentStep/steps), 0);
+        bgMusic.volume=Math.max(initialVolume*(1-currentStep/steps),0);
 
-        if(currentStep >= steps){
+        if(currentStep>=steps){
             clearInterval(fadeOut);
-            bgMusic.src = newSrc;
+            bgMusic.src=newSrc;
             bgMusic.play().catch(()=>{});
 
-            let fadeInStep = 0;
-            const fadeIn = setInterval(() => {
+            let fadeInStep=0;
+            const fadeIn=setInterval(()=>{
                 fadeInStep++;
-                bgMusic.volume = Math.min(fadeInStep/steps, 1);
-                if(fadeInStep >= steps) clearInterval(fadeIn);
-            }, step);
+                bgMusic.volume=Math.min(fadeInStep/steps,1);
+                if(fadeInStep>=steps) clearInterval(fadeIn);
+            },step);
         }
-    }, step);
+    },step);
 }
 
 // JAVASCRIPT: PAGE SYSTEM
@@ -302,7 +386,7 @@ function tampilHalaman(html,nextFunc=null){
     },500);
 }
 
-// JAVASCRIPT: PAGE SYSTEM
+// HALAMAN 1
 function halamanNama(){
     bgMusic.src="happy-birthday.mp3";
     bgMusic.play().catch(()=>{});
@@ -312,18 +396,16 @@ function halamanNama(){
         <input type="text" id="nama" placeholder="Nama kamu..." />
         <button id="btnNext">Lanjut ➜</button>
     `,()=>{
-
         document.getElementById("btnNext").onclick=()=>{
             const nama=document.getElementById("nama").value.trim();
             if(!nama) return alert("Masukkan namamu dulu 😊");
             localStorage.setItem("namaUser",nama);
             halamanUcapan();
         };
-
     });
 }
 
-// JAVASCRIPT: PAGE SYSTEM
+// HALAMAN 2
 function halamanUcapan(){
     const nama=localStorage.getItem("namaUser")||"Sahabat";
 
@@ -337,7 +419,7 @@ function halamanUcapan(){
     });
 }
 
-// JAVASCRIPT: PAGE SYSTEM
+// HALAMAN 3
 function halamanDoa(){
     const nama=localStorage.getItem("namaUser")||"Sahabat";
 
@@ -353,133 +435,131 @@ function halamanDoa(){
     });
 }
 
-// JAVASCRIPT: PAGE SYSTEM
+// HALAMAN 4
 function halamanFoto(){
-    changeMusicSmooth("memories.mp3", 1500);
+    changeMusicSmooth("memories.mp3",1500);
 
     tampilHalaman(`
         <h1>📸🌟</h1>
         <div class="story-container">
-    <div class="story-slide"><div class="polaroid"><img src="images/1.png"></div></div>
-    <div class="story-slide"><div class="polaroid"><img src="images/2.png"></div></div>
-    <div class="story-slide"><div class="polaroid"><img src="images/3.png"></div></div>
-    <div class="story-slide"><div class="polaroid"><img src="images/4.png"></div></div>
-    <div class="story-slide"><div class="polaroid"><img src="images/5.png"></div></div>
-    <div class="story-slide"><div class="polaroid"><img src="images/6.png"></div></div>
-</div>
+            <div class="story-slide"><div class="polaroid"><img src="images/1.png"></div></div>
+            <div class="story-slide"><div class="polaroid"><img src="images/2.png"></div></div>
+            <div class="story-slide"><div class="polaroid"><img src="images/3.png"></div></div>
+            <div class="story-slide"><div class="polaroid"><img src="images/4.png"></div></div>
+            <div class="story-slide"><div class="polaroid"><img src="images/5.png"></div></div>
+            <div class="story-slide"><div class="polaroid"><img src="images/6.png"></div></div>
+        </div>
 
         <button id="btnFlower"> 🌸 ➜</button>
         <button id="btnKembali">Kembali ke Awal 🔁</button>
     `,()=>{
-
-        document.getElementById("btnFlower").onclick = halamanFlower;
-        document.getElementById("btnKembali").onclick = halamanNama;
-
+        document.getElementById("btnFlower").onclick=halamanFlower;
+        document.getElementById("btnKembali").onclick=halamanNama;
     });
 }
 
-// JAVASCRIPT: PAGE SYSTEM
+// HALAMAN 5
 function halamanFlower(){
     content.classList.remove("show");
     content.classList.add("page-fade");
 
-    setTimeout(() => {
-        content.innerHTML = '';
-        const flowerPage = document.getElementById("flower-page");
-        flowerPage.style.display = 'flex';
+    setTimeout(()=>{
+        content.innerHTML='';
+        const flowerPage=document.getElementById("flower-page");
+        flowerPage.style.display='flex';
 
-        setTimeout(() => { flowerPage.classList.add("page-show"); }, 50);
+        setTimeout(()=>{ flowerPage.classList.add("page-show"); },50);
 
-        changeMusicSmooth('flower-music.mp3', 1500);
+        changeMusicSmooth('flower-music.mp3',1500);
 
-        const flower = document.getElementById("flower");
-        flower.style.opacity = 1;
+        const flower=document.getElementById("flower");
+        flower.style.opacity=1;
 
-        let scale = 1;
-        const maxScale = 3;
+        let scale=1;
+        const maxScale=3;
 
-        flower.onclick = () => {
-            if(scale < maxScale){
-                scale += 0.3;
-                flower.style.transform = `scale(${scale})`;
+        flower.onclick=()=>{
+            if(scale<maxScale){
+                scale+=0.3;
+                flower.style.transform=`scale(${scale})`;
             } else {
-                flower.style.opacity = 0;
+                flower.style.opacity=0;
 
                 for(let i=0;i<50;i++){
-                    const gift = document.createElement('div');
+                    const gift=document.createElement('div');
                     gift.classList.add('gift');
-                    gift.style.setProperty('--x', (Math.random()*400-200)+'px');
-                    gift.style.setProperty('--y', (Math.random()*-400)+'px');
-                    gift.innerText = '🎁';
+                    gift.style.setProperty('--x',(Math.random()*400-200)+'px');
+                    gift.style.setProperty('--y',(Math.random()*-400)+'px');
+                    gift.innerText='🎁';
                     flowerPage.appendChild(gift);
                     setTimeout(()=>gift.remove(),1000);
                 }
 
                 for(let i=0;i<50;i++){
-                    const c = document.createElement('div');
+                    const c=document.createElement('div');
                     c.classList.add('confetti');
-                    c.style.left = Math.random()*100 + "vw";
-                    c.style.animationDuration = 2 + Math.random()*2 + "s";
-                    c.style.setProperty("--color", confettiColors[Math.floor(Math.random()*5)]);
-                    c.style.background = c.style.getPropertyValue("--color");
+                    c.style.left=Math.random()*100+"vw";
+                    c.style.animationDuration=2+Math.random()*2+"s";
+                    c.style.setProperty("--color",confettiColors[Math.floor(Math.random()*5)]);
+                    c.style.background=c.style.getPropertyValue("--color");
                     flowerPage.appendChild(c);
                     setTimeout(()=>c.remove(),2000);
                 }
 
-                setTimeout(()=>{ scale = 1; flower.style.transform = `scale(${scale})`; flower.style.opacity = 1; },1000);
+                setTimeout(()=>{
+                    scale=1;
+                    flower.style.transform=`scale(${scale})`;
+                    flower.style.opacity=1;
+                },1000);
             }
         };
 
-        document.getElementById("btnBackFlower").onclick = () => {
+        document.getElementById("btnBackFlower").onclick=()=>{
             flowerPage.classList.remove("page-show");
-            setTimeout(() => { flowerPage.style.display = 'none'; halamanNama(); }, 600);
+            setTimeout(()=>{ flowerPage.style.display='none'; halamanNama(); },600);
         };
 
-        let flowerBtnLetter = document.getElementById("btnLetter");
+        let flowerBtnLetter=document.getElementById("btnLetter");
         if(!flowerBtnLetter){
-            flowerBtnLetter = document.createElement('button');
-            flowerBtnLetter.id = "btnLetter";
-            flowerBtnLetter.textContent = ' 📜 ➜';
-            flowerBtnLetter.style.marginTop = '20px';
+            flowerBtnLetter=document.createElement('button');
+            flowerBtnLetter.id="btnLetter";
+            flowerBtnLetter.textContent=' 📜 ➜';
+            flowerBtnLetter.style.marginTop='20px';
             flowerPage.appendChild(flowerBtnLetter);
-            flowerBtnLetter.onclick = halamanLetter;
+            flowerBtnLetter.onclick=halamanLetter;
         }
 
-    }, 400);
+    },400);
 }
 
-// JAVASCRIPT: PAGE SYSTEM
+// HALAMAN 6
 function halamanLetter(){
-    document.getElementById("flower-page").style.display = 'none';
+    document.getElementById("flower-page").style.display='none';
 
-    const letterPage = document.getElementById("letter-page");
-    const letter = document.getElementById("letter");
+    const letterPage=document.getElementById("letter-page");
+    const letter=document.getElementById("letter");
 
-    letterPage.style.display = 'flex';
+    letterPage.style.display='flex';
 
-    // Tampilkan surat
-    setTimeout(() => {
-        letter.classList.add('show');
-    }, 50);
+    setTimeout(()=>{ letter.classList.add('show'); },50);
 
-    // Tombol close di dalam surat
     if(!document.getElementById("btnCloseLetter")){
-        const btn = document.createElement("button");
-        btn.id = "btnCloseLetter";
-        btn.textContent = "Exit";
+        const btn=document.createElement("button");
+        btn.id="btnCloseLetter";
+        btn.textContent="Exit";
         letter.appendChild(btn);
 
-        btn.onclick = () => {
+        btn.onclick=()=>{
             letter.classList.remove("show");
-            setTimeout(() => {
-                letterPage.style.display = "none";
+            setTimeout(()=>{
+                letterPage.style.display="none";
                 halamanNama();
-            }, 800);
+            },800);
         };
     }
 }
 
-// JAVASCRIPT: START PAGE
+// START
 halamanNama();
 
 </script>
