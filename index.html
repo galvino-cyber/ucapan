@@ -361,6 +361,17 @@ function changeMusicSmooth(newSrc, duration=1000){
     }, step);
 }
 
+// ======== SYNC VOLUME WITH STORAGE ========
+function syncVolume() {
+    let stored = localStorage.getItem("globalVolume");
+    let v = stored !== null ? parseFloat(stored) : 0.5;
+
+    // set kedua elemen
+    bgMusic.volume = v;
+    volumeSlider.value = v;
+    updateSliderUI(v);
+}
+
 // JAVASCRIPT: PAGE SYSTEM
 const content=document.getElementById("content");
 
