@@ -398,7 +398,7 @@ function changeMusicSmooth(newSrc, duration=1000){
             const fadeIn=setInterval(()=>{
                 fadeInStep++;
                 let target = parseFloat(localStorage.getItem("globalVolume") || volumeSlider.value || 1);
-                bgMusic.volume=Math.min(fadeInStep/steps,1);
+                bgMusic.volume = Math.min((fadeInStep/steps) * target, target);
                 if(fadeInStep>=steps) clearInterval(fadeIn);
             },step);
         }
