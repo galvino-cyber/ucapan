@@ -153,72 +153,39 @@ button:hover { background:#22c55e; transform:scale(1.05); }
 /* ====================== CSS: VOLUME SLIDER (ADDED) ====================== */
 /* BOX NEON */
 #volumeBox {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 12px 16px;
-    border-radius: 14px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 0 12px #ff00ff80, 0 0 18px #ff00ff40 inset;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    z-index: 99999;
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: rgba(255, 0, 255, 0.12);
+  padding: 12px 18px;
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 12px #ff00ff, 0 0 30px #ff00ff55;
+  z-index: 9999;
+  border: 1px solid rgba(255, 0, 255, 0.4);
 }
 
-/* Label neon */
-#volumeBox label {
-    color: #fff;
-    font-size: 14px;
-    text-shadow: 0 0 6px #ff00ff;
-}
-
-/* SLIDER AREA */
 #volumeSlider {
-    appearance: none;
-    width: 160px;
-    height: 8px;
-    border-radius: 6px;
-
-    /* === indikator tetap seperti awal === */
-    background: linear-gradient(90deg, #ff7eb3 30%, #ffffff50 30%);
-
-    outline: none;
-    cursor: pointer;
-    box-shadow: 0 0 8px #ff00ff60 inset;
+  width: 160px;
+  height: 8px;
+  appearance: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ff7eb3 50%, #ffffff33 50%);
+  outline: none;
+  cursor: pointer;
 }
 
-/* SLIDER THUMB NEON */
 #volumeSlider::-webkit-slider-thumb {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #ffffff;
-
-    /* NEON EFFECT */
-    box-shadow:
-        0 0 10px #ff00ff,
-        0 0 16px #ff00ff,
-        0 0 26px #ff00ff,
-        0 0 36px #ff00ff;
-
-    border: 2px solid #ff00ff;
-}
-
-#volumeSlider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #ffffff;
-    border-radius: 50%;
-    border: 2px solid #ff00ff;
-    box-shadow:
-        0 0 10px #ff00ff,
-        0 0 16px #ff00ff,
-        0 0 26px #ff00ff,
-        0 0 36px #ff00ff;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #ff7eb3;
+  box-shadow:
+    0 0 10px #ff7eb3,
+    0 0 20px #ff00ff,
+    0 0 40px #ff00ff;
 }
 </style>
 </head>
