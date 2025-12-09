@@ -294,82 +294,71 @@ function stopGlobalDecor(){
 startGlobalDecor();
 
 // JAVASCRIPT: MUSIC SYSTEM
-const bgMusic=document.getElementById("bg-music");
-bgMusic.volume = 0.3;
+const bgMusic = document.getElementById("bg-music");
+const volumeSlider = document.getElementById("volumeSlider");
 
-// JAVASCRIPT: VOLUME SLIDER (ADDED)
-const volumeSlider=document.getElementById("volumeSlider");
-// ==== VOLUME SYNC: READ SAVED VOLUME (FROM WEB GATE) ====
-let savedVolume = localStorage.getItem("globalVolume");
-if (savedVolume !== null) {
-    bgMusic.volume = parseFloat(savedVolume);
-    volumeSlider.value = parseFloat(savedVolume);
-}
-function updateSliderUI() {
-    const val = volumeSlider.value;
-    bgMusic.volume = val;
+// ======== LOAD VOLUME FROM STORAGE ========
+let saved = localStorage.getItem("globalVolume");
+let initialVolume = saved !== null ? parseFloat(saved) : 0.5;
 
-    // indikator slider
-    const percent = val * 100;
+// Set volume awal
+bgMusic.volume = initialVolume;
+volumeSlider.value = initialVolume;
+
+// ======== UPDATE SLIDER UI ========
+function updateSliderUI(v) {
+    const percent = v * 100;
     volumeSlider.style.background =
         `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
-
-    // ==== VOLUME SYNC: SAVE ====
-    localStorage.setItem("globalVolume", val);
 }
 
-updateSliderUI();
+updateSliderUI(initialVolume);
+
+// ======== SLIDER INPUT EVENTS ========
 volumeSlider.addEventListener("input", () => {
-    const val = volumeSlider.value;
-    bgMusic.volume = val;
+    let v = parseFloat(volumeSlider.value);
 
-    // 🔹 simpan volume global ke localStorage
-    localStorage.setItem("globalVolume", val);
-
-    const percent = val * 100;
-    volumeSlider.style.background =
-        `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
+    bgMusic.volume = v;
+    localStorage.setItem("globalVolume", v); // simpan untuk web gate & ucapan
+    updateSliderUI(v);
 });
 
-// 🔹 Fungsi sinkronisasi volume global
-function syncVolume() {
-    const saved = localStorage.getItem("globalVolume");
-    if (saved !== null) {
-        bgMusic.volume = parseFloat(saved);
-        volumeSlider.value = saved;
-        const percent = saved * 100;
-        volumeSlider.style.background =
-            `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
+// ======== ALLOW PLAY ON FIRST CLICK ========
+document.body.addEventListener("click", () => {
+    if (bgMusic.paused) {
+        bgMusic.play().catch(() => {});
     }
-}
+}, { once: true });
 
-// allow user to start music
-document.body.addEventListener("click",()=>{ if(bgMusic.paused) bgMusic.play().catch(()=>{}); });
-
+// ======== SMOOTH MUSIC CHANGE (JIKA DIPAKAI) ========
 function changeMusicSmooth(newSrc, duration=1000){
     const step=50;
     const steps=duration/step;
     let currentStep=0;
-    const initialVolume=bgMusic.volume||1;
+    const initialVolume = bgMusic.volume;
 
-    const fadeOut=setInterval(()=>{
+    // fade out
+    const fadeOut = setInterval(()=>{
         currentStep++;
-        bgMusic.volume=Math.max(initialVolume*(1-currentStep/steps),0);
+        bgMusic.volume = Math.max(initialVolume * (1 - currentStep/steps), 0);
 
-        if(currentStep>=steps){
+        if (currentStep >= steps) {
             clearInterval(fadeOut);
-            bgMusic.src=newSrc;
+
+            bgMusic.src = newSrc;
             bgMusic.play().catch(()=>{});
 
             let fadeInStep=0;
-            const fadeIn=setInterval(()=>{
+            let target = parseFloat(localStorage.getItem("globalVolume") || 1);
+
+            const fadeIn = setInterval(()=>{
                 fadeInStep++;
-                let target = parseFloat(localStorage.getItem("globalVolume") || volumeSlider.value || 1);
                 bgMusic.volume = Math.min((fadeInStep/steps) * target, target);
-                if(fadeInStep>=steps) clearInterval(fadeIn);
-            },step);
+
+                if (fadeInStep >= steps) clearInterval(fadeIn);
+            }, step);
         }
-    },step);
+    }, step);
 }
 
 // JAVASCRIPT: PAGE SYSTEM
