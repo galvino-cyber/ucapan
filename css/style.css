@@ -1,0 +1,312 @@
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Comic Sans MS",sans-serif; }
+
+/* CSS: BODY */
+body {
+    background:pink;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    overflow-x:hidden;
+    overflow-y:auto;
+    transition: background 0.5s ease;
+}
+
+/* CSS: TEXT */
+h1 { 
+    font-size:2.2em; 
+    color:#333; 
+    margin-bottom:10px; 
+    animation:fadeIn 1s ease; 
+}
+
+p { 
+    font-size:18px; 
+    color:#444; 
+    margin:10px 0; 
+    line-height:1.5; 
+    animation:fadeIn 1.5s ease; 
+}
+
+/* CSS: INPUT */
+input {
+    padding:10px;
+    border:1px solid #aaa;
+    border-radius:10px;
+    margin-top:15px;
+    font-size:16px;
+    outline:none;
+}
+
+/* CSS: BUTTON */
+button {
+    margin-top:30px;
+    background:#4ade80;
+    color:white;
+    padding:10px 25px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:16px;
+    transition:0.3s;
+}
+
+button:hover { background:#22c55e; transform:scale(1.05); }
+
+/* CSS: ANIMATION */
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:translateY(0);} }
+
+/* CSS: RESPONSIVE */
+@media(max-width:600px){
+    h1{font-size:1.8em;}
+    p{font-size:16px;}
+}
+
+/* CSS: FX LAYER */
+#fx-layer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:9998;
+}
+#confetti-container, #balloon-container{ position:absolute; inset:0; pointer-events:none; }
+
+/* CSS: BALLON */   
+.balloon {
+    position:absolute;
+    bottom:-150px;
+    width:60px;
+    height:80px;
+    border-radius:50%;
+    background:var(--color);
+    animation:floatUp 8s linear forwards;
+    opacity:0.95;
+}
+.balloon::after {
+    content:"";
+    position:absolute;
+    bottom:-20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:2px;
+    height:20px;
+    background:#888;
+}
+@keyframes floatUp {
+    0%{transform:translateY(0);opacity:0.95;}
+    100%{transform:translateY(-120vh);opacity:0;}
+}
+
+/* CSS: CONFETTI */
+.confetti {
+    position:fixed;
+    top:0;
+    left:0;
+    width:8px;
+    height:14px;
+    background:var(--color);
+    animation:fall 3s linear forwards;
+}
+@keyframes fall {
+    0%{transform:translateY(-10px) rotate(0deg);opacity:1;}
+    100%{transform:translateY(100vh) rotate(360deg);opacity:0;}
+}
+
+/* CSS: CONTENT TRANSITION */
+#content { 
+    opacity:0; 
+    transition:opacity 0.8s ease; 
+}
+
+#content.show { 
+    opacity:1; 
+}
+
+/* CSS: STORY / POLAROID */
+.story-container { 
+    display: flex; 
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; 
+    width: 100%; 
+    height: 100vh; 
+    scroll-behavior: smooth; 
+    -webkit-overflow-scrolling: touch; 
+    padding: 20px 0; 
+}
+
+.story-slide { 
+    flex: 0 0 85%; 
+    max-width: 350px; 
+    margin: 0 20px; 
+    scroll-snap-align: center; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.polaroid { 
+    background: #fff; 
+    padding: 15px; 
+    border-radius: 12px; 
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.2); 
+    width: 100%; height: auto; 
+}
+
+.polaroid img { 
+    width: 100%; 
+    height: auto; 
+    border-radius: 8px; 
+    object-fit: cover; 
+    user-select: none; 
+    pointer-events: none; 
+}
+
+.polaroid .caption { 
+    margin-top:8px; 
+    font-size:14px; 
+    color:#555; 
+}
+
+/* CSS: FLOWER PAGE */
+#flower-page { 
+    display:none; 
+    flex-direction:column; 
+    justify-content:center; 
+    align-items:center; 
+    min-height:100vh; 
+    background:#ffe0f0; 
+    text-align:center; 
+    gap:20px; 
+    position:relative; 
+}
+
+#flower { 
+    width:100px; 
+    height:100px; 
+    background:url('../images/flower.png') no-repeat center/contain; 
+    cursor:pointer; 
+    transition:transform 0.2s ease, opacity 0.2s ease; 
+}
+
+.gift { 
+    position:absolute; 
+    font-size:24px; 
+    animation: fly 1s linear forwards; 
+    }
+@keyframes fly { 
+    0% { transform:translate(0,0) rotate(0deg); opacity:1; } 
+    100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; } 
+}
+
+/* CSS: LETTER PAGE */
+#letter-page { 
+    display:none; 
+    position:fixed; 
+    top:0; 
+    left:0; 
+    width:100%; 
+    height:100%; 
+    background:rgba(0,0,0,0.5); 
+    justify-content:center; 
+    align-items:center; 
+    perspective:1000px; 
+    z-index:10; 
+}
+
+#letter { 
+    background:url('../images/letter-bg.jpeg') no-repeat center/cover; 
+    width:90%; 
+    max-width:600px; 
+    padding:50px 40px; 
+    border-radius:15px; 
+    box-shadow:0 10px 30px rgba(0,0,0,0.3); 
+    transform-origin:left center; 
+    transform:rotateY(-90deg); 
+    opacity:0; 
+    transition:transform 1s ease, opacity 1s ease; 
+    color: #333; 
+    text-align: left; 
+    overflow-y: auto; 
+    max-height: 80vh; 
+}
+
+#letter.show { 
+    transform:rotateY(0deg); 
+    opacity:1; 
+}
+
+#letter p { 
+    line-height:1.6; 
+    font-size:16px; 
+    white-space:pre-wrap; 
+    opacity:0; 
+    transition:opacity 1s ease 0.5s; 
+}
+
+#letter.show p { 
+    opacity:1; 
+}
+
+#letter button { 
+    display:block; 
+    margin:20px auto 0; 
+    background:#4ade80; 
+    color:white; 
+    padding:10px 25px; 
+    border:none; 
+    border-radius:25px; 
+    cursor:pointer; 
+    font-size:16px; 
+}
+
+/* CSS: WATERMARK */
+.watermark {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  padding: 6px 0;
+  pointer-events: none;
+  text-align:center;
+}
+
+/* CSS: VOLUME SLIDER */
+#volumeBox {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: rgba(255, 0, 255, 0.12);
+  padding: 12px 18px;
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 12px #ff00ff, 0 0 30px #ff00ff55;
+  z-index: 9999;
+  border: 1px solid rgba(255, 0, 255, 0.4);
+}
+
+#volumeSlider {
+  width: 160px;
+  height: 8px;
+  appearance: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ff7eb3 50%, #ffffff33 50%);
+  outline: none;
+  cursor: pointer;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #ff7eb3;
+  box-shadow:
+    0 0 10px #ff7eb3,
+    0 0 20px #ff00ff,
+    0 0 40px #ff00ff;
+}
