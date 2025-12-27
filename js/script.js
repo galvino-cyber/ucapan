@@ -1,6 +1,8 @@
+// ========================== JAVASCRIPT ==========================
+
 document.addEventListener("DOMContentLoaded", () => {
 
-// ============================== GLOBAL ==============================
+// ========================== JS: GLOBAL ==========================
 let globalConfettiInterval = null;
 let globalBalloonInterval = null;
 const confettiColors=["#ff0a54","#ff477e","#ff85a1","#fbb1bd","#bde0fe"];
@@ -44,11 +46,10 @@ function startGlobalDecor(){
 }
 startGlobalDecor();
 
-// ============================== MUSIC & VOLUME ==============================
+// ========================== JS: MUSIC & VOLUME ==========================
 const bgMusic = document.getElementById("bgMusic");
 const volumeSlider = document.getElementById("volumeSlider");
 
-// Load volume dari localStorage
 let savedVolume = localStorage.getItem("globalVolume");
 let initialVolume = savedVolume !== null ? parseFloat(savedVolume) : 0.5;
 bgMusic.volume = initialVolume;
@@ -67,7 +68,6 @@ volumeSlider.addEventListener("input",()=>{
     updateSliderUI(v);
 });
 
-// first click play
 document.addEventListener("click", ()=>{
     bgMusic.play().catch(()=>{});
 }, {once:true});
@@ -83,11 +83,10 @@ function syncVolume(){
 function changeMusicSmooth(newSrc, duration = 1000) {
     if (!bgMusic) return;
     const oldVolume = bgMusic.volume;
-    const stepTime = 50; // ms per step
+    const stepTime = 50;
     const steps = duration / stepTime;
     let currentStep = 0;
 
-    // Fade out
     const fadeOut = setInterval(() => {
         currentStep++;
         bgMusic.volume = oldVolume * (1 - currentStep / steps);
@@ -108,13 +107,15 @@ function changeMusicSmooth(newSrc, duration = 1000) {
     }, stepTime);
 }
 
-// ============================== HALAMAN ==============================
+// ========================== JS: HALAMAN ==========================
 const content=document.getElementById("content");
 
-function tampilHalaman(html,nextFunc=null){
+function tampilHalaman(html, nextFunc=null){
     content.classList.remove("show");
+
     setTimeout(()=>{
-        content.innerHTML=html;
+        content.innerHTML = "";
+        content.innerHTML = html;
         content.classList.add("show");
         syncVolume();
         if(nextFunc) nextFunc();
@@ -183,115 +184,128 @@ function halamanFoto(){
             <div class="story-slide"><div class="polaroid"><img src="images/5.png"></div></div>
             <div class="story-slide"><div class="polaroid"><img src="images/6.png"></div></div>
         </div>
-        <button id="btnFlower"> 🌸 ➜</button>
+        <button id="btnSongs">🎶 ➜</button>
 
     `,()=>{
-        document.getElementById("btnFlower").onclick=halamanFlower;
+        document.getElementById("btnSongs").onclick=halamanSongs;
         document.getElementById("btnKembali").onclick=halamanNama;
     });
 }
 
-// --- HALAMAN 5: FLOWER ---
-function halamanFlower(){
-    content.classList.remove("show");
-    content.classList.add("page-fade");
+// --- HALAMAN 5: TOP 3 SONGS ---
+function halamanSongs(){
 
-    setTimeout(()=>{
-        content.innerHTML='';
-        const flowerPage=document.getElementById("flower-page");
-        flowerPage.style.display='flex';
-        flowerPage.classList.add("page-show");
+    tampilHalaman(`
+        <div id="songs-page">
+            <h1 class="songs-title">Top 3 Songs</h1>
 
-        changeMusicSmooth("audio/flower-music.mp3", 1500);
+            <div class="cards">
 
-        const flower=document.getElementById("flower");
-        flower.style.opacity=1;
-        let scale=1;
-        const maxScale=3;
+                <div class="song">
+                    <div class="song-title">Kasih Putih</div>
+                    <div class="song-artist">Glenn Fredly</div>
+                    <div class="card" data-song="audio/flower-music.mp3"></div>
+                </div>
 
-        flower.onclick=()=>{
-            if(scale<maxScale){
-                scale+=0.3;
-                flower.style.transform=`scale(${scale})`;
-            } else {
-                flower.style.opacity=0;
-                for(let i=0;i<50;i++){
-                    const gift=document.createElement('div');
-                    gift.classList.add('gift');
-                    gift.style.setProperty('--x',(Math.random()*400-200)+'px');
-                    gift.style.setProperty('--y',(Math.random()*-400)+'px');
-                    gift.innerText='🎁';
-                    flowerPage.appendChild(gift);
-                    setTimeout(()=>gift.remove(),1000);
+                <div class="song">
+                    <div class="song-title">Song Two</div>
+                    <div class="song-artist">Artist</div>
+                    <div class="card" data-song="audio/song2.mp3"></div>
+                </div>
+
+                <div class="song">
+                    <div class="song-title">Song Three</div>
+                    <div class="song-artist">Artist</div>
+                    <div class="card" data-song="audio/song3.mp3"></div>
+                </div>
+
+            </div>
+
+            <button id="songsNextBtn">📜 ➜</button>
+        </div>
+    `, initSongsLogic);
+}
+
+function initSongsLogic(){
+
+    const cards = document.querySelectorAll('.card');
+    const nextBtn = document.getElementById('songsNextBtn');
+
+    let currentCard = null;
+    let currentSong = null;
+
+    cards.forEach(card=>{
+        card.addEventListener('click',()=>{
+
+            const songSrc = card.dataset.song;
+
+            if(currentCard === card){
+                if(bgMusic.paused){
+                    bgMusic.play().catch(()=>{});
+                    card.classList.add('active');
+                } else {
+                    bgMusic.pause();
+                    card.classList.remove('active');
                 }
-                for(let i=0;i<50;i++){
-                    const c=document.createElement('div');
-                    c.classList.add('confetti');
-                    c.style.left=Math.random()*100+"vw";
-                    c.style.animationDuration=2+Math.random()*2+"s";
-                    c.style.setProperty("--color",confettiColors[Math.floor(Math.random()*5)]);
-                    c.style.background=c.style.getPropertyValue("--color");
-                    flowerPage.appendChild(c);
-                    setTimeout(()=>c.remove(),2000);
-                }
-                setTimeout(()=>{
-                    scale=1;
-                    flower.style.transform=`scale(${scale})`;
-                    flower.style.opacity=1;
-                },1000);
+                return;
             }
-        };
 
-        const btnBackFlower = document.getElementById("btnBackFlower");
-        if(btnBackFlower){
-            btnBackFlower.onclick = () => {
-                flowerPage.classList.remove("page-show");
-                setTimeout(()=>{ 
-                    flowerPage.style.display='none'; 
-                    halamanNama(); 
-                },600);
-            };
-        }
+            if(currentCard) currentCard.classList.remove('active');
 
-        let flowerBtnLetter=document.getElementById("btnLetter");
-        if(!flowerBtnLetter){
-            flowerBtnLetter=document.createElement('button');
-            flowerBtnLetter.id="btnLetter";
-            flowerBtnLetter.textContent=' 📜 ➜';
-            flowerBtnLetter.style.marginTop='20px';
-            flowerPage.appendChild(flowerBtnLetter);
-            flowerBtnLetter.onclick=halamanLetter;
-        }
+            currentCard = card;
+            currentSong = songSrc;
 
-    },400);
+            changeMusicSmooth(songSrc, 1000);
+
+            card.classList.add('active');
+            nextBtn.classList.add('active');
+        });
+    });
+
+    nextBtn.onclick = ()=>{
+        localStorage.setItem("selectedSong", currentSong);
+        halamanLetter();
+    };
 }
 
-// --- HALAMAN 6: LETTER ---
+// --- HALAMAN 6: SURAT ---
 function halamanLetter(){
-    document.getElementById("flower-page").style.display='none';
-    const letterPage=document.getElementById("letter-page");
-    const letter=document.getElementById("letter");
 
-    letterPage.style.display='flex';
-    setTimeout(()=>{ letter.classList.add('show'); },50);
+  const chosenSong = localStorage.getItem("selectedSong");
+  if(chosenSong && !bgMusic.src.includes(chosenSong)){
+      changeMusicSmooth(chosenSong, 1200);
+  }
 
-    if(!document.getElementById("btnCloseLetter")){
-        const btn=document.createElement("button");
-        btn.id="btnCloseLetter";
-        btn.textContent="Exit";
-        letter.appendChild(btn);
+  tampilHalaman(`
+    <div id="letter" class="letter">
+      <h1>📜🎉</h1>
+      <p>
+Hey hey, makasih udah luangin waktu buat buka link ini. Happy birthday ya! Semoga semua yang kamu impikan bisa tercapai. Tetap usaha dan terus berdoa. Semoga kamu selalu diberikan kesehatan, kebahagiaan, dan kesuksesan dalam segala hal. Semoga tahun ini penuh pengalaman berharga, teman-teman yang menyenangkan, dan momen-momen yang membuatmu tersenyum! 
+    
+Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered and made you feel uncomfortable. I hope we can still talk to each other without any hard fellings. I'm so happy to know you. Stay cheerful and shine like the sun and your nickname 🌞🌞, and keep faithfully serving God.
+    
+Setelah ini, hapus tab browser / hapus history browser kamu ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
 
-        btn.onclick=()=>{
-            letter.classList.remove("show");
-            setTimeout(()=>{
-                letterPage.style.display="none";
-                halamanNama();
-            },800);
-        };
-    }
+Monday is coming, semangat sekolah ya! 😉
+
+Sleep well and sweet dreams! 😴💤
+
+Jesus Bless You! ✨ 
+    
+-v
+      </p>
+
+      <button id="btnCloseLetter">Exit</button>
+    </div>
+  `, ()=>{
+    const btn = document.getElementById("btnCloseLetter");
+    btn.onclick = ()=>{
+      halamanNama();
+    };
+  });
 }
 
-// ============================== INIT ==============================
+// ========================== JS: INIT ==========================
 halamanNama();
 
 });
