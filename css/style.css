@@ -16,7 +16,7 @@ body {
     flex-direction:column;
     text-align:center;
     overflow-x: hidden;
-    overflow-y:hidden;
+    overflow-y: auto;
     transition: background 0.5s ease;
 }
 
