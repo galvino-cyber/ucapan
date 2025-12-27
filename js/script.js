@@ -55,8 +55,8 @@ let initialVolume = savedVolume !== null ? parseFloat(savedVolume) : 0.5;
 bgMusic.volume = initialVolume;
 volumeSlider.value = initialVolume;
 
-function updateSliderUI(v){
-    const percent = v*100;
+function updateSliderUI(v)
+{ const percent = v*100;
     volumeSlider.style.background = `linear-gradient(90deg, #ff7eb3 ${percent}%, #ffffff50 ${percent}%)`;
 }
 updateSliderUI(initialVolume);
