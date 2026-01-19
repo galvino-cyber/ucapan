@@ -162,7 +162,6 @@ function halamanDoa(){
         <h1>Doa Untukmu 💐</h1>
         <p>${nama}, semoga kamu selalu sehat, bahagia, dan penuh semangat belajar.</p>
         <p>Semoga impian dan cita-citamu tercapai, dan dipenuhi pengalaman baru yang berharga. 🌈✨</p>
-        <p>Tuhan Yesus Memberkati! ✨</p>
         <p>(●'◡'●)</p>
         <button id="btnFoto">📸 ➜</button>
     `,()=>{
@@ -175,7 +174,7 @@ function halamanFoto(){
     changeMusicSmooth("audio/memories.mp3", 1500);
 
     tampilHalaman(`
-        <h1>📸🌟</h1>
+        <h1>📸👉</h1>
         <div class="story-container">
             <div class="story-slide"><div class="polaroid"><img src="images/1.png"></div></div>
             <div class="story-slide"><div class="polaroid"><img src="images/2.png"></div></div>
@@ -282,9 +281,7 @@ function halamanLetter(){
       <p>
 Hey hey, makasih udah luangin waktu buat buka link ini. Happy birthday ya! Semoga semua yang kamu impikan bisa tercapai. Tetap usaha dan terus berdoa. Semoga kamu selalu diberikan kesehatan, kebahagiaan, dan kesuksesan dalam segala hal. Semoga tahun ini penuh pengalaman berharga, teman-teman yang menyenangkan, dan momen-momen yang membuatmu tersenyum! 
     
-Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered and made you feel uncomfortable. I hope we can still talk to each other without any hard fellings. I'm so happy to know you. Stay cheerful and shine like the sun and your nickname 🌞🌞, and keep faithfully serving God.
-
-Website ini adalah cara agar momen yang hanya terjadi sekali seumur hidup bisa selalu tersimpan sebagai kenangan 😅
+Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered and made you feel uncomfortable. I hope we can still talk to each other without any hard fellings. I'm lucky to have found u. Stay cheerful and shine like the sun and your nickname 🌞🌞, and keep faithfully serving God.
 
 Setelah ini, hapus tab browser / hapus history browser kamu ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
 
@@ -297,7 +294,7 @@ Jesus Bless You! ✨
 -v
       </p>
 
-      <button id="btnBackToSongs">⬅ 🎶</button>
+      <button id="btnBackToSongs">⬅️🎶</button>
       <button id="btnCloseLetter">Exit</button>
     </div>
   `, ()=>{
