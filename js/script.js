@@ -196,25 +196,25 @@ function halamanSongs(){
 
     tampilHalaman(`
         <div id="songs-page">
-            <h1 class="songs-title">Top 3 Songs</h1>
+            <h1 class="songs-title">3 Favorite Songs</h1>
 
             <div class="cards">
 
                 <div class="song">
-                    <div class="song-title">Kasih Putih</div>
-                    <div class="song-artist">Glenn Fredly</div>
-                    <div class="card" data-song="audio/flower-music.mp3"></div>
+                    <div class="song-title">What a Beautiful Name</div>
+                    <div class="song-artist">Brooke Ligertwood</div>
+                    <div class="card" data-song="audio/song1.mp3"></div>
                 </div>
 
                 <div class="song">
-                    <div class="song-title">Song Two</div>
-                    <div class="song-artist">Artist</div>
+                    <div class="song-title">Goodness Of God</div>
+                    <div class="song-artist">Bethel Music</div>
                     <div class="card" data-song="audio/song2.mp3"></div>
                 </div>
 
                 <div class="song">
-                    <div class="song-title">Song Three</div>
-                    <div class="song-artist">Artist</div>
+                    <div class="song-title">Golden Hour</div>
+                    <div class="song-artist">JVKE</div>
                     <div class="card" data-song="audio/song3.mp3"></div>
                 </div>
 
