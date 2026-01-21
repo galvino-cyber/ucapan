@@ -182,6 +182,9 @@ function halamanFoto(){
             <div class="story-slide"><div class="polaroid"><img src="images/4.png"></div></div>
             <div class="story-slide"><div class="polaroid"><img src="images/5.png"></div></div>
             <div class="story-slide"><div class="polaroid"><img src="images/6.png"></div></div>
+            <div class="story-slide"><div class="polaroid"><img src="images/7.png"></div></div>
+            <div class="story-slide"><div class="polaroid"><img src="images/8.png"></div></div>
+
         </div>
         <button id="btnSongs">🎶 ➜</button>
 
@@ -196,7 +199,7 @@ function halamanSongs(){
 
     tampilHalaman(`
         <div id="songs-page">
-            <h1 class="songs-title">3 Favorite Songs</h1>
+            <h1 class="songs-title">Ur Favorite Songs</h1>
 
             <div class="cards">
 
@@ -207,7 +210,7 @@ function halamanSongs(){
                 </div>
 
                 <div class="song">
-                    <div class="song-title">Goodness Of God</div>
+                    <div class="song-title">Goodness of God</div>
                     <div class="song-artist">Bethel Music</div>
                     <div class="card" data-song="audio/song2.mp3"></div>
                 </div>
@@ -281,7 +284,7 @@ function halamanLetter(){
       <p>
 Hey hey, makasih udah luangin waktu buat buka link ini. Happy birthday ya! Semoga semua yang kamu impikan bisa tercapai. Tetap usaha dan terus berdoa. Semoga kamu selalu diberikan kesehatan, kebahagiaan, dan kesuksesan dalam segala hal. Semoga tahun ini penuh pengalaman berharga, teman-teman yang menyenangkan, dan momen-momen yang membuatmu tersenyum! 
     
-Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered and made you feel uncomfortable. I hope we can still talk to each other without any hard fellings. I'm lucky to have found u. Stay cheerful and shine like the sun and your nickname 🌞🌞, and keep faithfully serving God.
+Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered and made you feel uncomfortable. I hope we can still talk to each other without any hard fellings. I'm lucky to have found u. Stay cheerful and shine like the sun and your nickname 🌞🌞, and keep faithfully serving God
 
 Setelah ini, hapus tab browser / hapus history browser kamu ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
 
@@ -292,6 +295,7 @@ Sleep well and sweet dreams! 😴💤
 Jesus Bless You! ✨ 
     
 -v
+#✌️
       </p>
 
       <button id="btnBackToSongs">⬅️🎶</button>
