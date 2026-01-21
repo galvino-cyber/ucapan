@@ -182,9 +182,6 @@ function halamanFoto(){
             <div class="story-slide"><div class="polaroid"><img src="images/4.png"></div></div>
             <div class="story-slide"><div class="polaroid"><img src="images/5.png"></div></div>
             <div class="story-slide"><div class="polaroid"><img src="images/6.png"></div></div>
-            <div class="story-slide"><div class="polaroid"><img src="images/7.png"></div></div>
-            <div class="story-slide"><div class="polaroid"><img src="images/8.png"></div></div>
-
         </div>
         <button id="btnSongs">🎶 ➜</button>
 
