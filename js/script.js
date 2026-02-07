@@ -196,7 +196,7 @@ function halamanSongs(){
 
     tampilHalaman(`
         <div id="songs-page">
-            <h1 class="songs-title">Ur Favorite Songs</h1>
+            <h1 class="songs-title">Your Favorite Songs</h1>
 
             <div class="cards">
 
@@ -283,7 +283,7 @@ Hey hey, makasih udah luangin waktu buat buka link ini. Happy birthday ya! Semog
     
 Thanks for still wanting to talk to me up until now. I'm sorry for what I did in the past that always bothered and made you feel uncomfortable. I hope we can still talk to each other without any hard fellings. I'm lucky to have found u. Stay cheerful and shine like the sun and your nickname 🌞🌞, and keep faithfully serving God
 
-Setelah ini, hapus tab browser / hapus history browser kamu ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
+Setelah ini, hapus tab browser kamu ya! karena musiknya bakal tetap nyala walau keluar dari browser 😄 
 
 Monday is coming, semangat sekolah ya! 😉
 
