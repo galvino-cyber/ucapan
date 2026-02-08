@@ -196,7 +196,7 @@ function halamanSongs(){
 
     tampilHalaman(`
         <div id="songs-page">
-            <h1 class="songs-title">Your Favorite Songs</h1>
+            <h1 class="songs-title">🎶✨</h1>
 
             <div class="cards">
 
